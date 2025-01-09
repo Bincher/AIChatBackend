@@ -10,4 +10,6 @@ public class AiChatApplication {
 		SpringApplication.run(AiChatApplication.class, args);
 	}
 
+	
+
 }
