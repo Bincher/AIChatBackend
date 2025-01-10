@@ -44,8 +44,8 @@ public class WebSecurityConfig{
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  
         )
         .authorizeHttpRequests(request -> request
-            .requestMatchers("/","/api/v1/auth/**", "/api/v1/search/**", "/file/**", "/kafka/**").permitAll()
-            .requestMatchers(HttpMethod.GET, "/api/v1/board/**","/api/v1/user/*", "/kafka/**").permitAll()
+            .requestMatchers("/**","/api/v1/auth/**", "/api/v1/search/**", "/file/**", "/ws/chat").permitAll()
+            .requestMatchers(HttpMethod.GET,"/**","/api/v1/board/**","/api/v1/user/*", "/ws/chat").permitAll()
             .anyRequest().authenticated()
         )
         .exceptionHandling(exceptionHandling -> exceptionHandling
@@ -78,8 +78,8 @@ class FailedAuthenticationEntryPoint implements AuthenticationEntryPoint{
         
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("{\"code:\":\"AF\",\",message\":\"unauthorized failed\"}");
+            response.getWriter().write("{\"code:\":\"F\",\",message\":\"unauthorized failed\"}");
         
     }
 
-  }
+}

@@ -16,8 +16,8 @@ public class Producer {
     }
 
     public void produceMessage(String topic, String payload) {
-        //log.info("Producer TOPIC : " + topic);
-        //log.info("Producer PAYLOAD : " + payload);
+        log.info("Producer TOPIC : " + topic);
+        log.info("Producer PAYLOAD : " + payload);
         kafkaTemplate.send(topic, payload);
     }
 }
