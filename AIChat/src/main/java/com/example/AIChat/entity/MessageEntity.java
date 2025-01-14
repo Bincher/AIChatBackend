@@ -3,11 +3,15 @@ package com.example.AIChat.entity;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Document(collection = "messages")
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class MessageEntity {
     @Id
     private String id;
