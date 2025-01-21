@@ -17,7 +17,7 @@ public interface ResponseMessage {
     String SIGN_IN_FAIL = "Login information mismatch";
     String AUTHORIZATION_FAIL = "Authorization fail";
     String MAIL_FAIL = "Mail fail";
-
+    String CERTIFICATION_FAIL = "Certification fail";
 
     // HTTP Status 403
     String NO_PERMISSION = "Do not have permission";
