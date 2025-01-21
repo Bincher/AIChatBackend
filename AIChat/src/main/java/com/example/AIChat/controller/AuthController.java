@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.AIChat.dto.request.auth.CheckCertificationRequestDto;
 import com.example.AIChat.dto.request.auth.EmailCertificationRequestDto;
 import com.example.AIChat.dto.request.auth.IdCheckRequestDto;
+import com.example.AIChat.dto.request.auth.SignInRequestDto;
 import com.example.AIChat.dto.request.auth.SignUpRequestDto;
 import com.example.AIChat.dto.response.auth.CheckCertificationResponseDto;
 import com.example.AIChat.dto.response.auth.EmailCertificationResponseDto;
 import com.example.AIChat.dto.response.auth.IdCheckResponseDto;
+import com.example.AIChat.dto.response.auth.SignInResponseDto;
 import com.example.AIChat.dto.response.auth.SignUpResponseDto;
 import com.example.AIChat.service.AuthService;
 
@@ -56,6 +58,14 @@ public class AuthController {
         @RequestBody @Valid SignUpRequestDto requestBody
     ){
         ResponseEntity<? super SignUpResponseDto> response = authService.SignUp(requestBody);
+        return response;
+    }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<? super SignInResponseDto> SignIn(
+        @RequestBody @Valid SignInRequestDto requestBody
+    ){
+        ResponseEntity<? super SignInResponseDto> response = authService.SignIn(requestBody);
         return response;
     }
 }

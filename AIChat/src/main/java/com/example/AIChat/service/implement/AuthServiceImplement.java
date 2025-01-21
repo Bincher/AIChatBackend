@@ -9,15 +9,18 @@ import com.example.AIChat.common.CertificationNumber;
 import com.example.AIChat.dto.request.auth.CheckCertificationRequestDto;
 import com.example.AIChat.dto.request.auth.EmailCertificationRequestDto;
 import com.example.AIChat.dto.request.auth.IdCheckRequestDto;
+import com.example.AIChat.dto.request.auth.SignInRequestDto;
 import com.example.AIChat.dto.request.auth.SignUpRequestDto;
 import com.example.AIChat.dto.response.ResponseDto;
 import com.example.AIChat.dto.response.auth.CheckCertificationResponseDto;
 import com.example.AIChat.dto.response.auth.EmailCertificationResponseDto;
 import com.example.AIChat.dto.response.auth.IdCheckResponseDto;
+import com.example.AIChat.dto.response.auth.SignInResponseDto;
 import com.example.AIChat.dto.response.auth.SignUpResponseDto;
 import com.example.AIChat.entity.CertificationEntity;
 import com.example.AIChat.entity.UserEntity;
 import com.example.AIChat.provider.EmailProvider;
+import com.example.AIChat.provider.JwtProvider;
 import com.example.AIChat.repository.CertificationRepository;
 import com.example.AIChat.repository.UserRepository;
 import com.example.AIChat.service.AuthService;
@@ -33,6 +36,8 @@ public class AuthServiceImplement implements AuthService{
     private final EmailProvider emailProvider;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    private final JwtProvider jwtProvider;
 
     @Override
     public ResponseEntity<? super IdCheckResponseDto> idCheck(IdCheckRequestDto dto){
@@ -142,6 +147,32 @@ public class AuthServiceImplement implements AuthService{
         }
 
         return SignUpResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super SignInResponseDto> SignIn(SignInRequestDto dto) {
+        
+        String token = null;
+        
+        try{
+
+            String loginId = dto.getLoginId();
+            UserEntity userEntity = userRepository.findByLoginId(loginId);
+            if(userEntity == null) return SignInResponseDto.signInFailed();
+
+            String password = dto.getPassword();
+            String encodedPassword = userEntity.getPassword();
+            boolean isMatched = passwordEncoder.matches(password, encodedPassword);
+            if(!isMatched) return SignInResponseDto.signInFailed();
+
+            token = jwtProvider.create(loginId);
+            
+        }catch(Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return SignInResponseDto.success(token);
     }
 
 }
