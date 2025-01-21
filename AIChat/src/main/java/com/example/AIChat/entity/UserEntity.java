@@ -1,5 +1,7 @@
 package com.example.AIChat.entity;
 
+import com.example.AIChat.dto.request.auth.SignUpRequestDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,4 +37,19 @@ public class UserEntity {
 
     @Column(nullable = true)
     private String phoneNumber;
+
+    @Column(nullable = true)
+    private String profileImage;
+
+    @Column(nullable = false)
+    private boolean agreedPersonal;
+
+    public UserEntity(SignUpRequestDto dto){
+        this.loginId = dto.getLoginId();
+        this.email = dto.getEmail();
+        this.password = dto.getPassword();
+        this.nickname = dto.getNickname();
+        this.agreedPersonal = dto.isAgreedPersonal();
+        this.nickname = dto.getNickname();
+    }
 }

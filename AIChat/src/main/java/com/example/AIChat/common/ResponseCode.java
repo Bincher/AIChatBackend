@@ -14,6 +14,7 @@ public interface ResponseCode {
     String DUPLICATE_ID = "DI";
     String NOT_EXISTED_USER = "NU";
     String NOT_EXISTED_BOARD = "NB";
+    String DISAGREED_PERSONAL = "DP";
 
     // HTTP Status 401
     String SIGN_IN_FAIL = "SF";
