@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.AIChat.dto.request.auth.EmailCertificationRequestDto;
 import com.example.AIChat.dto.request.auth.IdCheckRequestDto;
+import com.example.AIChat.dto.response.auth.EmailCertificationResponseDto;
 import com.example.AIChat.dto.response.auth.IdCheckResponseDto;
 import com.example.AIChat.service.AuthService;
 
@@ -27,5 +29,13 @@ public class AuthController {
         ResponseEntity<? super IdCheckResponseDto> response = authService.idCheck(requestBody);
         
         return response;
+    }
+
+    @PostMapping("/email-certification")
+    public ResponseEntity<? super EmailCertificationResponseDto> emailCertification(
+        @RequestBody @Valid EmailCertificationRequestDto requestBody
+        ) {
+            ResponseEntity<? super EmailCertificationResponseDto> response = authService.emailCertification(requestBody);
+            return response;
     }
 }

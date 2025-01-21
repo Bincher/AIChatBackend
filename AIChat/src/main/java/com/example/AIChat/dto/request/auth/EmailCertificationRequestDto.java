@@ -1,7 +1,7 @@
 package com.example.AIChat.dto.request.auth;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,9 +9,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class IdCheckRequestDto {
+public class EmailCertificationRequestDto {
     
     @NotBlank
     private String loginId;
+
+    @Email
+    @NotBlank
+    private String email;
 }

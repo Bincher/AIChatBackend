@@ -7,4 +7,6 @@ import com.example.AIChat.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     boolean existsByLoginId(String loginId);
+
+    boolean existsByEmail(String email);
 }
