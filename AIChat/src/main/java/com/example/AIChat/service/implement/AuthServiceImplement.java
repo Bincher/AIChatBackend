@@ -121,6 +121,10 @@ public class AuthServiceImplement implements AuthService{
             boolean existedEmail = userRepository.existsByEmail(email);
             if(existedEmail) return SignUpResponseDto.duplicateEmail();
 
+            String nickname = dto.getNickname();
+            boolean existedNickname = userRepository.existsByNickname(nickname);
+            if(existedNickname) return SignUpResponseDto.duplicateNickname();
+
             String password = dto.getPassword();
             String encodedPassword = passwordEncoder.encode(password);
             dto.setPassword(encodedPassword);
