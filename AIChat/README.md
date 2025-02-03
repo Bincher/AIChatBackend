@@ -2,8 +2,6 @@
 
 - 현재 목표
 
-    - id-check, email-certification, check-certification, sigh-up, sign-in 제작 완료
+    - 노션 정리 완료
 
-        - postman을 통한 테스트 완료
-
-    - 이후 할 것 : 노션 정리, 프론트엔드
+    - 이후 할 것 : 로그인 후 메인 페이지 작성(본인의 채팅 모음)
