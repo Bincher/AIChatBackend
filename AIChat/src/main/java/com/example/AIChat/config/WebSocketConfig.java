@@ -15,19 +15,19 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.example.AIChat.common.CustomWebSocketHandler;
-import com.example.AIChat.service.implement.ChatService;
+import com.example.AIChat.service.implement.ChatServiceImplement;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig extends TextWebSocketHandler implements WebSocketConfigurer {
 
-    private final ChatService chatService;
+    private final ChatServiceImplement chatService;
 
     // WebSocket 세션 관리
     private static final Set<WebSocketSession> sessions = ConcurrentHashMap.newKeySet();
 
-    public WebSocketConfig(ChatService chatService) {
+    public WebSocketConfig(ChatServiceImplement chatService) {
         this.chatService = chatService;
     }
 
