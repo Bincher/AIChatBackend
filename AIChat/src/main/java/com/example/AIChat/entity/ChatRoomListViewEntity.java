@@ -13,18 +13,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="chat_list_view")
-@Table(name="chat_list_view")
+@Entity(name="chat_room_list_view")
+@Table(name="chat_room_list_view")
 @Immutable
-public class ChatListViewEntity {
+public class ChatRoomListViewEntity {
     
     @Id
     @Column(name = "chat_room_id")
     private int chatRoomId;
-
     private String chatRoomName;
-    private int userId;
-    private String userNickname;
-    private String userProfileImage;
+    private String userLoginId;
 
 }

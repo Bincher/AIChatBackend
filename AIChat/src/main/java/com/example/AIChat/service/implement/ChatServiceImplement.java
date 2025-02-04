@@ -9,10 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.AIChat.dto.response.ResponseDto;
 import com.example.AIChat.dto.response.chat.GetChatListResponseDto;
-import com.example.AIChat.entity.ChatListViewEntity;
+import com.example.AIChat.entity.ChatRoomListViewEntity;
 import com.example.AIChat.entity.MessageEntity;
-import com.example.AIChat.entity.UserEntity;
-import com.example.AIChat.repository.ChatListViewRepository;
+import com.example.AIChat.repository.ChatRoomListViewRepository;
 import com.example.AIChat.repository.MessageRepository;
 import com.example.AIChat.repository.UserRepository;
 import com.example.AIChat.service.ChatService;
@@ -24,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class ChatServiceImplement implements ChatService{
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
-    private final ChatListViewRepository chatListViewRepository;
+    private final ChatRoomListViewRepository chatListViewRepository;
 
     public void saveMessage(String roomId, String sender, String content) {
         System.out.println("ChatService.saveMessage called with roomId=" + roomId + ", sender=" + sender + ", content=" + content);
@@ -42,14 +41,13 @@ public class ChatServiceImplement implements ChatService{
 
     @Override
     public ResponseEntity<? super GetChatListResponseDto> getChatList(String loginId) {
-        List<ChatListViewEntity> chatListViewEntities = new ArrayList<>();
+        List<ChatRoomListViewEntity> chatListViewEntities = new ArrayList<>();
 
         try{
             boolean existedUser = userRepository.existsByLoginId(loginId);
             if(!existedUser) return GetChatListResponseDto.noExistUser();
 
-            UserEntity user = userRepository.findByLoginId(loginId);
-            chatListViewEntities = chatListViewRepository.findByUserIdOrderByChatRoomIdDesc(user.getId());
+            chatListViewEntities = chatListViewRepository.findByUserLoginIdOrderByChatRoomIdDesc(loginId);
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();

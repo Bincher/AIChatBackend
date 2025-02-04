@@ -7,23 +7,23 @@ import org.springframework.http.ResponseEntity;
 
 import com.example.AIChat.common.ResponseCode;
 import com.example.AIChat.common.ResponseMessage;
-import com.example.AIChat.dto.object.ChatListItem;
+import com.example.AIChat.dto.object.ChatRoomListItem;
 import com.example.AIChat.dto.response.ResponseDto;
-import com.example.AIChat.entity.ChatListViewEntity;
+import com.example.AIChat.entity.ChatRoomListViewEntity;
 
 
 import lombok.Getter;
 
 @Getter
 public class GetChatListResponseDto extends ResponseDto{
-    private List<ChatListItem> chatList;
+    private List<ChatRoomListItem> chatList;
 
-    private GetChatListResponseDto(List<ChatListViewEntity> chatListViewEntities){
+    private GetChatListResponseDto(List<ChatRoomListViewEntity> chatListViewEntities){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.chatList = ChatListItem.getList(chatListViewEntities);
+        this.chatList = ChatRoomListItem.getList(chatListViewEntities);
     };
 
-    public static ResponseEntity<GetChatListResponseDto> success(List<ChatListViewEntity> chatListViewEntities){
+    public static ResponseEntity<GetChatListResponseDto> success(List<ChatRoomListViewEntity> chatListViewEntities){
         GetChatListResponseDto result = new GetChatListResponseDto(chatListViewEntities);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

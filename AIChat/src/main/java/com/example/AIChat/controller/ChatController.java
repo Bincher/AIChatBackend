@@ -36,7 +36,7 @@ public class ChatController {
         return messageRepository.findAllByRoomId(roomId);
     }
 
-    @GetMapping("/chatroomtemp")
+    @GetMapping("/chatroom")
     public ResponseEntity<? super GetChatListResponseDto> getChatList(
         @AuthenticationPrincipal String loginId
     ) {
