@@ -1,10 +1,10 @@
 package com.example.AIChat.service;
 
-import org.springframework.http.ResponseEntity;
+import java.util.List;
 
-import com.example.AIChat.dto.response.chat.GetChatListResponseDto;
+import com.example.AIChat.dto.object.ChatRoomWithUsersDto;
 
 public interface ChatService {
     public void saveMessage(String roomId, String sender, String content);
-    ResponseEntity<? super GetChatListResponseDto> getChatList(String loginId);
+    List<ChatRoomWithUsersDto> getUserChatRoomsWithUsers(Integer userId);
 }

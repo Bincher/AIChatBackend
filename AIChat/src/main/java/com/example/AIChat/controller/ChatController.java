@@ -3,13 +3,12 @@ package com.example.AIChat.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.AIChat.dto.response.chat.GetChatListResponseDto;
+import com.example.AIChat.dto.object.ChatRoomWithUsersDto;
 import com.example.AIChat.entity.MessageEntity;
 import com.example.AIChat.repository.MessageRepository;
 import com.example.AIChat.service.ChatService;
@@ -36,12 +35,10 @@ public class ChatController {
         return messageRepository.findAllByRoomId(roomId);
     }
 
-    @GetMapping("/chatroom")
-    public ResponseEntity<? super GetChatListResponseDto> getChatList(
-        @AuthenticationPrincipal String loginId
-    ) {
-        ResponseEntity<? super GetChatListResponseDto> response = chatService.getChatList(loginId);
-        return response;
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<ChatRoomWithUsersDto>> getChatRooms(@PathVariable Integer userId) {
+        List<ChatRoomWithUsersDto> response = chatService.getUserChatRoomsWithUsers(userId);
+        return ResponseEntity.ok(response);
     }
     
     

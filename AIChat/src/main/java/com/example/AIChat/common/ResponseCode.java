@@ -13,6 +13,7 @@ public interface ResponseCode {
     String DUPLICATE_ID = "DI";
     String NOT_EXISTED_USER = "NU";
     String DISAGREED_PERSONAL = "DP";
+    String NOT_EXISTED_CHAT_ROOM = "NC";
 
     // HTTP Status 401
     String SIGN_IN_FAIL = "SF";
