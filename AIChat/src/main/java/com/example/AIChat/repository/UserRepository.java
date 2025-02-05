@@ -1,5 +1,7 @@
 package com.example.AIChat.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.AIChat.entity.UserEntity;
@@ -14,7 +16,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     UserEntity findByLoginId(String loginId);
 
-    int findIdByLoginId(String loginId);
+    Optional<UserEntity> findIdByLoginId(String loginId);
 
-    int getIdByLoginId(String loginId);
+    Integer getIdByLoginId(String loginId);
 }

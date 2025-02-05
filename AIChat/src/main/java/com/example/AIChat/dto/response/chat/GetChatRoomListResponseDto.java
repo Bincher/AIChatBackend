@@ -1,13 +1,13 @@
 package com.example.AIChat.dto.response.chat;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.example.AIChat.common.ResponseCode;
 import com.example.AIChat.common.ResponseMessage;
+import com.example.AIChat.dto.object.ChatRoomWithUsersDto;
 import com.example.AIChat.dto.response.ResponseDto;
 
 import lombok.Getter;
@@ -15,4 +15,24 @@ import lombok.Getter;
 @Getter
 public class GetChatRoomListResponseDto extends ResponseDto {
 
+    private List<ChatRoomWithUsersDto> chatRooms;
+
+    private GetChatRoomListResponseDto() {
+        super();
+    }
+
+    private GetChatRoomListResponseDto(List<ChatRoomWithUsersDto> chatRooms) {
+        super();
+        this.chatRooms = chatRooms;
+    }
+
+    public static ResponseEntity<GetChatRoomListResponseDto> success(List<ChatRoomWithUsersDto> chatRooms) {
+        GetChatRoomListResponseDto responseBody = new GetChatRoomListResponseDto(chatRooms);
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    }
+
+    public static ResponseEntity<ResponseDto> fail(ResponseCode code, String message) {
+        ResponseDto result = new ResponseDto(ResponseCode.DUPLICATE_NICKNAME, ResponseMessage.DUPLICATE_NICKNAME);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    }
 }

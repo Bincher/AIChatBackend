@@ -1,4 +1,4 @@
-package com.example.AIChat.dto.object;
+package com.example.AIChat.dto.projection;
 
 public interface ChatRoomUserProjection {
     Integer getChatRoomId();

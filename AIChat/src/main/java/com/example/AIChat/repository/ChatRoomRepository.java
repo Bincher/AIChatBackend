@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.AIChat.dto.object.ChatRoomUserProjection;
+import com.example.AIChat.dto.projection.ChatRoomUserProjection;
 import com.example.AIChat.entity.ChatRoomEntity;
 
 @Repository
