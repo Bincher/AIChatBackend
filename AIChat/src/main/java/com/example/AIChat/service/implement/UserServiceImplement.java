@@ -7,9 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.AIChat.dto.request.user.GetUserListRequestDto;
+import com.example.AIChat.dto.request.user.PatchFriendRequestDto;
 import com.example.AIChat.dto.request.user.PostFriendRequestDto;
 import com.example.AIChat.dto.response.ResponseDto;
 import com.example.AIChat.dto.response.user.GetUserListResponseDto;
+import com.example.AIChat.dto.response.user.PatchFriendResponseDto;
 import com.example.AIChat.dto.response.user.PostFriendResponseDto;
 import com.example.AIChat.entity.FriendshipEntity;
 import com.example.AIChat.entity.UserEntity;
@@ -76,6 +78,34 @@ public class UserServiceImplement implements UserService{
         }
 
         return PostFriendResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super PatchFriendResponseDto> patchFriend(PatchFriendRequestDto dto,
+            String loginId) {
+        try {
+            boolean existsFriend = userRepository.existsByNickname(dto.getNickname());
+            if(!existsFriend) return GetUserListResponseDto.noExistUser();
+
+            boolean existsUser = userRepository.existsByLoginId(loginId);
+            if(!existsUser) return GetUserListResponseDto.noExistUser();
+
+            Integer friendId = getUserIdByLoginId(loginId);
+            Integer userId = getUserIdByNickname(dto.getNickname());
+
+            FriendshipEntity friendshipEntity = friendshipRepository.findByUserIdAndFriendId(userId, friendId);
+            boolean isAccept = dto.isFriendAccpet();
+            System.out.println(isAccept);
+            if(isAccept) friendshipEntity.setStatus("ACCEPTED");
+            else friendshipEntity.setStatus("REJECTED");
+            friendshipRepository.save(friendshipEntity);
+            
+        } catch(Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return PatchFriendResponseDto.success();
     }
     
 }
