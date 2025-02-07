@@ -1,5 +1,6 @@
 package com.example.AIChat.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,5 +21,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     Integer getIdByLoginId(String loginId);
 
-    boolean existsByUserId(Integer userId);
+    boolean existsById(Integer userId);
+
+    List<UserEntity> findByNicknameContainsOrderById(String nickname);
 }

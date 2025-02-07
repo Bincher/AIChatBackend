@@ -58,12 +58,10 @@ public class ChatServiceImplement implements ChatService{
         try {
             Integer userId = getUserIdByLoginId(loginId);
 
-            boolean existedUser = userRepository.existsByUserId(userId);
+            boolean existedUser = userRepository.existsById(userId);
             if(!existedUser) return GetChatRoomListResponseDto.notExistedUser();
 
             List<ChatRoomUserProjection> projections = chatRoomRepository.findChatRoomsWithUsers(userId);
-
-            
 
             Map<Integer, ChatRoomWithUsersDto> resultMap = new HashMap<>();
             for (ChatRoomUserProjection projection : projections) {
