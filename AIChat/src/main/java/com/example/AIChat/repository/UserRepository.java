@@ -19,9 +19,12 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     Optional<UserEntity> findIdByLoginId(String loginId);
 
+    Optional<UserEntity> findIdByNickname(String nickname);
+
     Integer getIdByLoginId(String loginId);
 
-    boolean existsById(Integer userId);
+    boolean existsById(@SuppressWarnings("null") Integer userId);
 
     List<UserEntity> findByNicknameContainsOrderById(String nickname);
+
 }
