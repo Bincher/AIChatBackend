@@ -92,7 +92,7 @@ public class UserServiceImplement implements UserService{
                     return PostFriendResponseDto.success();
                 } else if ("ACCEPTED".equals(status)) {
                     // 이미 친구 상태
-                    return PostFriendResponseDto.ExistedFriend();
+                    return PostFriendResponseDto.existedFriend();
                 }
             } else {
                 // 4. 새로운 친구 요청 생성
@@ -122,7 +122,7 @@ public class UserServiceImplement implements UserService{
 
             FriendshipEntity friendshipEntity = friendshipRepository.findByUserIdAndFriendId(userId, friendId);
             if (friendshipEntity == null) {
-                return PatchFriendResponseDto.NotExistUser(); // 요청이 없으면 에러 반환
+                return PatchFriendResponseDto.noExistUser(); // 요청이 없으면 에러 반환
             }
 
             boolean isAccept = dto.isFriendAccpet();
@@ -152,18 +152,17 @@ public class UserServiceImplement implements UserService{
         List<UserEntity> friends = new ArrayList<>();
 
         try {
-            // 1. 현재 사용자 ID 가져오기
+            boolean existsUser = userRepository.existsByLoginId(loginId);
+            if(!existsUser) return GetMyFriendResponseDto.noExistUser();
+
             Integer currentUserId = getUserIdByLoginId(loginId);
 
-            // 2. 친구 관계 조회
             List<FriendshipEntity> friendships = friendshipRepository.findAcceptedFriends(currentUserId);
 
-            // 3. 친구 ID 추출
             List<Integer> friendIds = friendships.stream()
-            .map(FriendshipEntity::getFriendId)
-            .collect(Collectors.toList());
+                .map(FriendshipEntity::getFriendId)
+                .collect(Collectors.toList());
 
-            // 4. 친구 정보 조회
             if (!friendIds.isEmpty()) {
                 friends = userRepository.findAllById(friendIds);
             }
@@ -191,7 +190,7 @@ public class UserServiceImplement implements UserService{
             FriendshipEntity friendshipEntity = friendshipRepository.findByUserIdAndFriendId(userId, friendId);
             FriendshipEntity reverseFriendshipEntity = friendshipRepository.findByUserIdAndFriendId(friendId, userId);
             if (friendshipEntity == null || reverseFriendshipEntity == null) {
-                return PatchFriendResponseDto.NotExistUser(); // 요청이 없으면 에러 반환
+                return PatchFriendResponseDto.noExistUser(); // 요청이 없으면 에러 반환
             }
 
             friendshipRepository.delete(friendshipEntity);
