@@ -2,6 +2,7 @@ package com.example.AIChat.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.AIChat.dto.request.user.GetUserListRequestDto;
 import com.example.AIChat.dto.request.user.PatchFriendRequestDto;
 import com.example.AIChat.dto.request.user.PostFriendRequestDto;
+import com.example.AIChat.dto.response.user.GetMyFriendResponseDto;
 import com.example.AIChat.dto.response.user.GetUserListResponseDto;
 import com.example.AIChat.dto.response.user.PatchFriendResponseDto;
 import com.example.AIChat.dto.response.user.PostFriendResponseDto;
@@ -28,9 +30,10 @@ public class UserController {
     
     @PostMapping("/nickname")
     public ResponseEntity<? super GetUserListResponseDto> getUserList(
+        @AuthenticationPrincipal String loginId,
         @RequestBody @Valid GetUserListRequestDto requestBody
     ) {
-        ResponseEntity<? super GetUserListResponseDto> response = userService.getUserList(requestBody);
+        ResponseEntity<? super GetUserListResponseDto> response = userService.getUserList(requestBody, loginId);
         return response;
     }
 
@@ -49,6 +52,14 @@ public class UserController {
         @RequestBody @Valid PatchFriendRequestDto requestBody
     ) {
         ResponseEntity<? super PatchFriendResponseDto> response = userService.patchFriend(requestBody, loginId);
+        return response;
+    }
+
+    @GetMapping("/friend")
+    public ResponseEntity<? super GetMyFriendResponseDto> getMyFriend(
+        @AuthenticationPrincipal String loginId
+    ) {
+        ResponseEntity<? super GetMyFriendResponseDto> response = userService.getMyFriend(loginId);
         return response;
     }
 }

@@ -5,6 +5,7 @@ public interface ResponseCode {
     // HTTP Status 200
     //public static final String SUCCESS = "SU";
     String SUCCESS = "SU";
+    String SUCCESS_ACCEPTED = "SA";
 
     // HTTP Status 400
     String VALIDATION_FAILED = "VF";
@@ -14,12 +15,14 @@ public interface ResponseCode {
     String NOT_EXISTED_USER = "NU";
     String DISAGREED_PERSONAL = "DP";
     String NOT_EXISTED_CHAT_ROOM = "NC";
+    String EXISTED_FRIEND = "EF";
 
     // HTTP Status 401
     String SIGN_IN_FAIL = "SF";
     String AUTHORIZATION_FAIL = "AF";
     String MAIL_FAIL = "MF";
     String CERTIFICATION_FAIL = "CF";
+    
 
     // HTTP Status 403
     String NO_PERMISSION = "NP";

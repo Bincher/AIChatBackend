@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,13 +25,17 @@ public class FriendshipEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String createdAt;
+    @Column(name = "user_id") // DB 컬럼명과 매핑
+    private Integer userId;
 
+    @Column(name = "friend_id") // DB 컬럼명과 매핑
+    private Integer friendId;
+
+    @Column(name = "status") // DB 컬럼명과 매핑
     private String status;
 
-    private int userId;
-
-    private int friendId;
+    @Column(name = "created_at") // DB 컬럼명과 매핑
+    private String createdAt;
 
     public FriendshipEntity(int userId, int friendId){
 

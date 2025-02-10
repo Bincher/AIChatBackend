@@ -3,6 +3,7 @@ package com.example.AIChat.common;
 public interface ResponseMessage {
     // HTTP Status 200
     String SUCCESS = "Success";
+    String SUCCESS_ACCEPTED = "Success Accepted";
 
     // HTTP Status 400
     String VALIDATION_FAILED = "Validation failed";
@@ -13,6 +14,7 @@ public interface ResponseMessage {
     String NOT_EXISTED_USER = "This user does not exist";
     String NOT_EXISTED_CHAT_ROOM = "This chat room does not exist";
     String DISAGREED_PERSONAL = "Disagreed personal";
+    String EXISTED_FRIEND = "Existed Friend";
 
     // HTTP Status 401
     String SIGN_IN_FAIL = "Login information mismatch";
