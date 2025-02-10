@@ -90,6 +90,9 @@ public class UserServiceImplement implements UserService{
                     // PENDING 상태 -> ACCEPTED로 변경
                     existingFriendship.setStatus("ACCEPTED");
                     friendshipRepository.save(existingFriendship);
+                    FriendshipEntity reverseFriendship = new FriendshipEntity(userId, friendId);
+                    reverseFriendship.setStatus("ACCEPTED");
+                    friendshipRepository.save(reverseFriendship);
                     return PostFriendResponseDto.success();
                 } else if ("ACCEPTED".equals(status)) {
                     // 이미 친구 상태
@@ -124,21 +127,24 @@ public class UserServiceImplement implements UserService{
             boolean existsUser = userRepository.existsByLoginId(loginId);
             if(!existsUser) return GetUserListResponseDto.noExistUser();
 
-            Integer friendId = getUserIdByLoginId(loginId);
-            Integer userId = getUserIdByNickname(dto.getNickname());
+            Integer userId = getUserIdByLoginId(loginId);
+            Integer friendId = getUserIdByNickname(dto.getNickname());
 
-            FriendshipEntity friendshipEntity = friendshipRepository.findByUserIdAndFriendId(userId, friendId);
+            FriendshipEntity friendshipEntity = friendshipRepository.findByUserIdAndFriendId(friendId, userId);
+            System.out.println(userId);
+            System.out.println(friendId);
+            System.out.println(friendshipEntity);
             if (friendshipEntity == null) {
                 return PatchFriendResponseDto.noExistUser(); // 요청이 없으면 에러 반환
             }
 
-            boolean isAccept = dto.isFriendAccpet();
+            boolean isAccept = dto.isFriendAccept();
             if (isAccept) {
                 // 수락 -> STATUS를 ACCEPTED로 변경
                 friendshipEntity.setStatus("ACCEPTED");
                 friendshipRepository.save(friendshipEntity);
 
-                FriendshipEntity reverseFriendship = new FriendshipEntity(friendId, userId);
+                FriendshipEntity reverseFriendship = new FriendshipEntity(userId, friendId);
                 reverseFriendship.setStatus("ACCEPTED");
                 friendshipRepository.save(reverseFriendship);
             } else {
@@ -224,7 +230,7 @@ public class UserServiceImplement implements UserService{
             List<FriendshipEntity> friendships = friendshipRepository.findInvitedUser(currentUserId);
 
             List<Integer> friendIds = friendships.stream()
-                .map(FriendshipEntity::getFriendId)
+                .map(FriendshipEntity::getUserId)
                 .collect(Collectors.toList());
 
             if (!friendIds.isEmpty()) {

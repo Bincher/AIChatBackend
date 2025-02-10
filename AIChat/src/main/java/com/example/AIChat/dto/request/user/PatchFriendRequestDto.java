@@ -13,5 +13,5 @@ public class PatchFriendRequestDto {
     @NotBlank
     private String nickname;
     @NotNull
-    private boolean friendAccpet;
+    private boolean friendAccept;
 }

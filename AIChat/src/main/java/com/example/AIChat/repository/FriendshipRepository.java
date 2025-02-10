@@ -11,6 +11,7 @@ import com.example.AIChat.entity.FriendshipEntity;
 public interface FriendshipRepository extends JpaRepository<FriendshipEntity, Integer> {
 
     boolean existsByUserIdAndFriendId(Integer userId, Integer friendId);
+
     FriendshipEntity findByUserIdAndFriendId(Integer userId, Integer friendId);
 
     @Query(value = "SELECT * FROM friendship WHERE user_id = :currentUserId AND status = 'ACCEPTED'", nativeQuery = true)
