@@ -15,6 +15,7 @@ public interface ResponseMessage {
     String NOT_EXISTED_CHAT_ROOM = "This chat room does not exist";
     String DISAGREED_PERSONAL = "Disagreed personal";
     String EXISTED_FRIEND = "Existed Friend";
+    String DUPLICATED_POSTING = "DUplicated Posting";
 
     // HTTP Status 401
     String SIGN_IN_FAIL = "Login information mismatch";

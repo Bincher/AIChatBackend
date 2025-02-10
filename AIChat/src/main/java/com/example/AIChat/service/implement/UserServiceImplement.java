@@ -95,7 +95,14 @@ public class UserServiceImplement implements UserService{
                     return PostFriendResponseDto.existedFriend();
                 }
             } else {
+
+                FriendshipEntity duplicatedPosting = friendshipRepository.findByUserIdAndFriendId(userId, friendId);
+                if(duplicatedPosting != null){
+                    return PostFriendResponseDto.duplicatedPosting();
+                }
+
                 // 4. 새로운 친구 요청 생성
+                
                 FriendshipEntity newFriendship = new FriendshipEntity(userId, friendId);
                 friendshipRepository.save(newFriendship);
             }

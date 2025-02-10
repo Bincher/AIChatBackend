@@ -16,6 +16,7 @@ public interface ResponseCode {
     String DISAGREED_PERSONAL = "DP";
     String NOT_EXISTED_CHAT_ROOM = "NC";
     String EXISTED_FRIEND = "EF";
+    String DUPLICATED_POSTING = "DU";
 
     // HTTP Status 401
     String SIGN_IN_FAIL = "SF";

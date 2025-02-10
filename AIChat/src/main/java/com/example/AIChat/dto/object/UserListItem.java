@@ -13,12 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserListItem {
-    private int id;
     private String nickname;
     private String profileImage;
 
     public UserListItem(UserEntity userEntity){
-        this.id = userEntity.getId();
         this.nickname = userEntity.getNickname();
         this.profileImage = userEntity.getProfileImage();
     }

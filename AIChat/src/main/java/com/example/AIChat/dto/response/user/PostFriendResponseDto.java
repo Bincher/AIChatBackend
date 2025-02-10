@@ -26,5 +26,10 @@ public class PostFriendResponseDto extends ResponseDto{
         ResponseDto result = new ResponseDto(ResponseCode.EXISTED_FRIEND, ResponseMessage.EXISTED_FRIEND);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
+
+    public static ResponseEntity<ResponseDto> duplicatedPosting(){
+        ResponseDto result = new ResponseDto(ResponseCode.DUPLICATED_POSTING, ResponseMessage.DUPLICATED_POSTING);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    }
     
 }
