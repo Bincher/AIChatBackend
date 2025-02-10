@@ -2,6 +2,7 @@ package com.example.AIChat.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.AIChat.dto.request.user.DeleteFriendRequestDto;
 import com.example.AIChat.dto.request.user.GetUserListRequestDto;
 import com.example.AIChat.dto.request.user.PatchFriendRequestDto;
 import com.example.AIChat.dto.request.user.PostFriendRequestDto;
+import com.example.AIChat.dto.response.user.DeleteFriendResponseDto;
 import com.example.AIChat.dto.response.user.GetMyFriendResponseDto;
 import com.example.AIChat.dto.response.user.GetUserListResponseDto;
 import com.example.AIChat.dto.response.user.PatchFriendResponseDto;
@@ -60,6 +63,15 @@ public class UserController {
         @AuthenticationPrincipal String loginId
     ) {
         ResponseEntity<? super GetMyFriendResponseDto> response = userService.getMyFriend(loginId);
+        return response;
+    }
+
+    @DeleteMapping("/friend")
+    public ResponseEntity<? super DeleteFriendResponseDto> deleteFriend(
+        @AuthenticationPrincipal String loginId,
+        @RequestBody @Valid DeleteFriendRequestDto requestBody
+    ) {
+        ResponseEntity<? super DeleteFriendResponseDto> response = userService.deleteFriend(requestBody, loginId);
         return response;
     }
 }

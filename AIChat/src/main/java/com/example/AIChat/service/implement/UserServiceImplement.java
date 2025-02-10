@@ -7,10 +7,12 @@ import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.example.AIChat.dto.request.user.DeleteFriendRequestDto;
 import com.example.AIChat.dto.request.user.GetUserListRequestDto;
 import com.example.AIChat.dto.request.user.PatchFriendRequestDto;
 import com.example.AIChat.dto.request.user.PostFriendRequestDto;
 import com.example.AIChat.dto.response.ResponseDto;
+import com.example.AIChat.dto.response.user.DeleteFriendResponseDto;
 import com.example.AIChat.dto.response.user.GetMyFriendResponseDto;
 import com.example.AIChat.dto.response.user.GetUserListResponseDto;
 import com.example.AIChat.dto.response.user.PatchFriendResponseDto;
@@ -172,5 +174,34 @@ public class UserServiceImplement implements UserService{
 
         // 5. 결과 반환
         return GetMyFriendResponseDto.success(friends);
+    }
+
+    @Override
+    public ResponseEntity<? super DeleteFriendResponseDto> deleteFriend(DeleteFriendRequestDto dto, String loginId) {
+        try {
+            boolean existsFriend = userRepository.existsByNickname(dto.getNickname());
+            if(!existsFriend) return GetUserListResponseDto.noExistUser();
+
+            boolean existsUser = userRepository.existsByLoginId(loginId);
+            if(!existsUser) return GetUserListResponseDto.noExistUser();
+
+            Integer friendId = getUserIdByLoginId(loginId);
+            Integer userId = getUserIdByNickname(dto.getNickname());
+
+            FriendshipEntity friendshipEntity = friendshipRepository.findByUserIdAndFriendId(userId, friendId);
+            FriendshipEntity reverseFriendshipEntity = friendshipRepository.findByUserIdAndFriendId(friendId, userId);
+            if (friendshipEntity == null || reverseFriendshipEntity == null) {
+                return PatchFriendResponseDto.NotExistUser(); // 요청이 없으면 에러 반환
+            }
+
+            friendshipRepository.delete(friendshipEntity);
+            friendshipRepository.delete(reverseFriendshipEntity);
+                
+        } catch(Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return DeleteFriendResponseDto.success();
     }
 }
