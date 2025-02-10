@@ -7,6 +7,7 @@ import com.example.AIChat.dto.request.user.GetUserListRequestDto;
 import com.example.AIChat.dto.request.user.PatchFriendRequestDto;
 import com.example.AIChat.dto.request.user.PostFriendRequestDto;
 import com.example.AIChat.dto.response.user.DeleteFriendResponseDto;
+import com.example.AIChat.dto.response.user.GetInviteFriendResponseDto;
 import com.example.AIChat.dto.response.user.GetMyFriendResponseDto;
 import com.example.AIChat.dto.response.user.GetUserListResponseDto;
 import com.example.AIChat.dto.response.user.PatchFriendResponseDto;
@@ -18,4 +19,6 @@ public interface UserService {
     ResponseEntity<? super PatchFriendResponseDto>patchFriend(PatchFriendRequestDto dto, String loginId);
     ResponseEntity<? super GetMyFriendResponseDto>getMyFriend(String loginId);
     ResponseEntity<? super DeleteFriendResponseDto>deleteFriend(DeleteFriendRequestDto dto, String loginId);
+    ResponseEntity<? super GetInviteFriendResponseDto>getInviteFriend(String loginId);
+    
 }

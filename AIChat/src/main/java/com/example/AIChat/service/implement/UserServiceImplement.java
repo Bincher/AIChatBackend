@@ -13,6 +13,7 @@ import com.example.AIChat.dto.request.user.PatchFriendRequestDto;
 import com.example.AIChat.dto.request.user.PostFriendRequestDto;
 import com.example.AIChat.dto.response.ResponseDto;
 import com.example.AIChat.dto.response.user.DeleteFriendResponseDto;
+import com.example.AIChat.dto.response.user.GetInviteFriendResponseDto;
 import com.example.AIChat.dto.response.user.GetMyFriendResponseDto;
 import com.example.AIChat.dto.response.user.GetUserListResponseDto;
 import com.example.AIChat.dto.response.user.PatchFriendResponseDto;
@@ -102,7 +103,6 @@ public class UserServiceImplement implements UserService{
                 }
 
                 // 4. 새로운 친구 요청 생성
-                
                 FriendshipEntity newFriendship = new FriendshipEntity(userId, friendId);
                 friendshipRepository.save(newFriendship);
             }
@@ -209,5 +209,33 @@ public class UserServiceImplement implements UserService{
         }
 
         return DeleteFriendResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetInviteFriendResponseDto> getInviteFriend(String loginId) {
+        List<UserEntity> users = new ArrayList<>();
+
+        try {
+            boolean existsUser = userRepository.existsByLoginId(loginId);
+            if(!existsUser) return GetMyFriendResponseDto.noExistUser();
+
+            Integer currentUserId = getUserIdByLoginId(loginId);
+
+            List<FriendshipEntity> friendships = friendshipRepository.findInvitedUser(currentUserId);
+
+            List<Integer> friendIds = friendships.stream()
+                .map(FriendshipEntity::getFriendId)
+                .collect(Collectors.toList());
+
+            if (!friendIds.isEmpty()) {
+                users = userRepository.findAllById(friendIds);
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        // 5. 결과 반환
+        return GetInviteFriendResponseDto.success(users);
     }
 }

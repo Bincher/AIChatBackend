@@ -15,4 +15,7 @@ public interface FriendshipRepository extends JpaRepository<FriendshipEntity, In
 
     @Query(value = "SELECT * FROM friendship WHERE user_id = :currentUserId AND status = 'ACCEPTED'", nativeQuery = true)
     List<FriendshipEntity> findAcceptedFriends(@Param("currentUserId") Integer currentUserId);
+
+    @Query(value = "SELECT * FROM friendship WHERE friend_id = :currentUserId AND status = 'PENDING'", nativeQuery = true)
+    List<FriendshipEntity> findInvitedUser(@Param("currentUserId") Integer currentUserId);
 }

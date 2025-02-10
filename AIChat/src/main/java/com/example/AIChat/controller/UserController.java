@@ -15,6 +15,7 @@ import com.example.AIChat.dto.request.user.GetUserListRequestDto;
 import com.example.AIChat.dto.request.user.PatchFriendRequestDto;
 import com.example.AIChat.dto.request.user.PostFriendRequestDto;
 import com.example.AIChat.dto.response.user.DeleteFriendResponseDto;
+import com.example.AIChat.dto.response.user.GetInviteFriendResponseDto;
 import com.example.AIChat.dto.response.user.GetMyFriendResponseDto;
 import com.example.AIChat.dto.response.user.GetUserListResponseDto;
 import com.example.AIChat.dto.response.user.PatchFriendResponseDto;
@@ -72,6 +73,14 @@ public class UserController {
         @RequestBody @Valid DeleteFriendRequestDto requestBody
     ) {
         ResponseEntity<? super DeleteFriendResponseDto> response = userService.deleteFriend(requestBody, loginId);
+        return response;
+    }
+
+    @GetMapping("/friend/invite")
+    public ResponseEntity<? super GetInviteFriendResponseDto> inviteFriend(
+        @AuthenticationPrincipal String loginId
+    ) {
+        ResponseEntity<? super GetInviteFriendResponseDto> response = userService.getInviteFriend(loginId);
         return response;
     }
 }
