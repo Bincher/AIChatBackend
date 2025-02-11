@@ -30,49 +30,49 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/api/v1/friend")
 public class FriendController {
 
-    private final FriendService userService;
+    private final FriendService friendService;
     
     @GetMapping("/{nickname}")
     public ResponseEntity<? super GetUserListResponseDto> getUserList(
         @AuthenticationPrincipal String loginId,
         @PathVariable String nickname
     ) {
-        ResponseEntity<? super GetUserListResponseDto> response = userService.getUserList(nickname, loginId);
+        ResponseEntity<? super GetUserListResponseDto> response = friendService.getUserList(nickname, loginId);
         return response;
     }
 
-    @PostMapping("/send")
+    @PostMapping("/request")
     public ResponseEntity<? super PostFriendResponseDto> postFriend(
         @AuthenticationPrincipal String loginId,
         @RequestBody @Valid PostFriendRequestDto requestBody
     ) {
-        ResponseEntity<? super PostFriendResponseDto> response = userService.postFriend(requestBody, loginId);
+        ResponseEntity<? super PostFriendResponseDto> response = friendService.postFriend(requestBody, loginId);
         return response;
     }
 
-    @PatchMapping("/request")
+    @PatchMapping("/response")
     public ResponseEntity<? super PatchFriendResponseDto> patchFriend(
         @AuthenticationPrincipal String loginId,
         @RequestBody @Valid PatchFriendRequestDto requestBody
     ) {
-        ResponseEntity<? super PatchFriendResponseDto> response = userService.patchFriend(requestBody, loginId);
+        ResponseEntity<? super PatchFriendResponseDto> response = friendService.patchFriend(requestBody, loginId);
         return response;
     }
 
-    @GetMapping("/")
+    @GetMapping("/myfriend")
     public ResponseEntity<? super GetMyFriendResponseDto> getMyFriend(
         @AuthenticationPrincipal String loginId
     ) {
-        ResponseEntity<? super GetMyFriendResponseDto> response = userService.getMyFriend(loginId);
+        ResponseEntity<? super GetMyFriendResponseDto> response = friendService.getMyFriend(loginId);
         return response;
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping("/myfriend/drop")
     public ResponseEntity<? super DeleteFriendResponseDto> deleteFriend(
         @AuthenticationPrincipal String loginId,
         @RequestBody @Valid DeleteFriendRequestDto requestBody
     ) {
-        ResponseEntity<? super DeleteFriendResponseDto> response = userService.deleteFriend(requestBody, loginId);
+        ResponseEntity<? super DeleteFriendResponseDto> response = friendService.deleteFriend(requestBody, loginId);
         return response;
     }
 
@@ -80,7 +80,7 @@ public class FriendController {
     public ResponseEntity<? super GetInviteFriendResponseDto> inviteFriend(
         @AuthenticationPrincipal String loginId
     ) {
-        ResponseEntity<? super GetInviteFriendResponseDto> response = userService.getInviteFriend(loginId);
+        ResponseEntity<? super GetInviteFriendResponseDto> response = friendService.getInviteFriend(loginId);
         return response;
     }
 }
