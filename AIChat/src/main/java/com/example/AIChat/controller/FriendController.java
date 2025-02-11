@@ -27,12 +27,12 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/friend")
 public class FriendController {
 
     private final FriendService userService;
     
-    @GetMapping("/nickname/{nickname}")
+    @GetMapping("/{nickname}")
     public ResponseEntity<? super GetUserListResponseDto> getUserList(
         @AuthenticationPrincipal String loginId,
         @PathVariable String nickname
@@ -41,7 +41,7 @@ public class FriendController {
         return response;
     }
 
-    @PostMapping("/friend/send")
+    @PostMapping("/send")
     public ResponseEntity<? super PostFriendResponseDto> postFriend(
         @AuthenticationPrincipal String loginId,
         @RequestBody @Valid PostFriendRequestDto requestBody
@@ -50,7 +50,7 @@ public class FriendController {
         return response;
     }
 
-    @PatchMapping("/friend/request")
+    @PatchMapping("/request")
     public ResponseEntity<? super PatchFriendResponseDto> patchFriend(
         @AuthenticationPrincipal String loginId,
         @RequestBody @Valid PatchFriendRequestDto requestBody
@@ -59,7 +59,7 @@ public class FriendController {
         return response;
     }
 
-    @GetMapping("/friend")
+    @GetMapping("/")
     public ResponseEntity<? super GetMyFriendResponseDto> getMyFriend(
         @AuthenticationPrincipal String loginId
     ) {
@@ -67,7 +67,7 @@ public class FriendController {
         return response;
     }
 
-    @DeleteMapping("/friend")
+    @DeleteMapping("/")
     public ResponseEntity<? super DeleteFriendResponseDto> deleteFriend(
         @AuthenticationPrincipal String loginId,
         @RequestBody @Valid DeleteFriendRequestDto requestBody
@@ -76,7 +76,7 @@ public class FriendController {
         return response;
     }
 
-    @GetMapping("/friend/invite")
+    @GetMapping("/invite")
     public ResponseEntity<? super GetInviteFriendResponseDto> inviteFriend(
         @AuthenticationPrincipal String loginId
     ) {
