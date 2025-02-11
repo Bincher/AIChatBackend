@@ -7,28 +7,28 @@ import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.example.AIChat.dto.request.user.DeleteFriendRequestDto;
-import com.example.AIChat.dto.request.user.PatchFriendRequestDto;
-import com.example.AIChat.dto.request.user.PostFriendRequestDto;
+import com.example.AIChat.dto.request.friend.DeleteFriendRequestDto;
+import com.example.AIChat.dto.request.friend.PatchFriendRequestDto;
+import com.example.AIChat.dto.request.friend.PostFriendRequestDto;
 import com.example.AIChat.dto.response.ResponseDto;
-import com.example.AIChat.dto.response.user.DeleteFriendResponseDto;
-import com.example.AIChat.dto.response.user.GetInviteFriendResponseDto;
-import com.example.AIChat.dto.response.user.GetMyFriendResponseDto;
-import com.example.AIChat.dto.response.user.GetUserListResponseDto;
-import com.example.AIChat.dto.response.user.PatchFriendResponseDto;
-import com.example.AIChat.dto.response.user.PostFriendResponseDto;
+import com.example.AIChat.dto.response.friend.DeleteFriendResponseDto;
+import com.example.AIChat.dto.response.friend.GetInviteFriendResponseDto;
+import com.example.AIChat.dto.response.friend.GetMyFriendResponseDto;
+import com.example.AIChat.dto.response.friend.GetUserListResponseDto;
+import com.example.AIChat.dto.response.friend.PatchFriendResponseDto;
+import com.example.AIChat.dto.response.friend.PostFriendResponseDto;
 import com.example.AIChat.entity.FriendshipEntity;
 import com.example.AIChat.entity.UserEntity;
 import com.example.AIChat.repository.FriendshipRepository;
 import com.example.AIChat.repository.UserRepository;
-import com.example.AIChat.service.UserService;
+import com.example.AIChat.service.FriendService;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImplement implements UserService{
+public class FriendServiceImplement implements FriendService{
 
     private final UserRepository userRepository;
     private final FriendshipRepository friendshipRepository;

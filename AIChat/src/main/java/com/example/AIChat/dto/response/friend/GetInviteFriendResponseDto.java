@@ -1,4 +1,4 @@
-package com.example.AIChat.dto.response.user;
+package com.example.AIChat.dto.response.friend;
 
 import java.util.List;
 
@@ -14,17 +14,18 @@ import com.example.AIChat.entity.UserEntity;
 import lombok.Getter;
 
 @Getter
-public class GetMyFriendResponseDto extends ResponseDto{
+public class GetInviteFriendResponseDto extends ResponseDto{
+
     private List<FriendListItem> friends;
 
-    public GetMyFriendResponseDto(List<FriendListItem> friends) {
+    private GetInviteFriendResponseDto(List<FriendListItem> friends){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.friends = friends; 
     }
 
-    public static ResponseEntity<GetMyFriendResponseDto> success(List<UserEntity> userEntities) {
+    public static ResponseEntity<GetInviteFriendResponseDto> success(List<UserEntity> userEntities){
         List<FriendListItem> friends = FriendListItem.getList(userEntities);
-        GetMyFriendResponseDto result = new GetMyFriendResponseDto(friends);
+        GetInviteFriendResponseDto result = new GetInviteFriendResponseDto(friends);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

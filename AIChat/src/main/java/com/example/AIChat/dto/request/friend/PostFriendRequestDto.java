@@ -1,4 +1,4 @@
-package com.example.AIChat.dto.request.user;
+package com.example.AIChat.dto.request.friend;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DeleteFriendRequestDto {
+public class PostFriendRequestDto {
     @NotBlank
     private String nickname;
 }

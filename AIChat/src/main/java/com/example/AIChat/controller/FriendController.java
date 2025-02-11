@@ -1,6 +1,5 @@
 package com.example.AIChat.controller;
 
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,16 +11,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.AIChat.dto.request.user.DeleteFriendRequestDto;
-import com.example.AIChat.dto.request.user.PatchFriendRequestDto;
-import com.example.AIChat.dto.request.user.PostFriendRequestDto;
-import com.example.AIChat.dto.response.user.DeleteFriendResponseDto;
-import com.example.AIChat.dto.response.user.GetInviteFriendResponseDto;
-import com.example.AIChat.dto.response.user.GetMyFriendResponseDto;
-import com.example.AIChat.dto.response.user.GetUserListResponseDto;
-import com.example.AIChat.dto.response.user.PatchFriendResponseDto;
-import com.example.AIChat.dto.response.user.PostFriendResponseDto;
-import com.example.AIChat.service.UserService;
+import com.example.AIChat.dto.request.friend.DeleteFriendRequestDto;
+import com.example.AIChat.dto.request.friend.PatchFriendRequestDto;
+import com.example.AIChat.dto.request.friend.PostFriendRequestDto;
+import com.example.AIChat.dto.response.friend.DeleteFriendResponseDto;
+import com.example.AIChat.dto.response.friend.GetInviteFriendResponseDto;
+import com.example.AIChat.dto.response.friend.GetMyFriendResponseDto;
+import com.example.AIChat.dto.response.friend.GetUserListResponseDto;
+import com.example.AIChat.dto.response.friend.PatchFriendResponseDto;
+import com.example.AIChat.dto.response.friend.PostFriendResponseDto;
+import com.example.AIChat.service.FriendService;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -29,9 +28,9 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/user")
-public class UserController {
+public class FriendController {
 
-    private final UserService userService;
+    private final FriendService userService;
     
     @GetMapping("/nickname/{nickname}")
     public ResponseEntity<? super GetUserListResponseDto> getUserList(

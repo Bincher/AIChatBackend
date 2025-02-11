@@ -1,4 +1,4 @@
-package com.example.AIChat.dto.request.user;
+package com.example.AIChat.dto.request.friend;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

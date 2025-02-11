@@ -1,4 +1,4 @@
-package com.example.AIChat.dto.response.user;
+package com.example.AIChat.dto.response.friend;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

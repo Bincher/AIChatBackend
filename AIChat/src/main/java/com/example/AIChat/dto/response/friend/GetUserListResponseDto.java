@@ -1,4 +1,4 @@
-package com.example.AIChat.dto.response.user;
+package com.example.AIChat.dto.response.friend;
 
 import java.util.List;
 

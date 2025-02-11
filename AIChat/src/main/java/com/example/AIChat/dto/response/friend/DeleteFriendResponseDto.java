@@ -1,4 +1,4 @@
-package com.example.AIChat.dto.response.user;
+package com.example.AIChat.dto.response.friend;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,14 +7,17 @@ import com.example.AIChat.common.ResponseCode;
 import com.example.AIChat.common.ResponseMessage;
 import com.example.AIChat.dto.response.ResponseDto;
 
-public class PatchFriendResponseDto extends ResponseDto{
+import lombok.Getter;
 
-    private PatchFriendResponseDto(){
+@Getter
+public class DeleteFriendResponseDto extends ResponseDto{
+    
+    private DeleteFriendResponseDto(){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
     }
 
-    public static ResponseEntity<PatchFriendResponseDto> success(){
-        PatchFriendResponseDto result = new PatchFriendResponseDto();
+    public static ResponseEntity<DeleteFriendResponseDto> success(){
+        DeleteFriendResponseDto result = new DeleteFriendResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
