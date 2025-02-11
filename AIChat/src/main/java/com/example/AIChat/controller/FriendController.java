@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.AIChat.dto.request.friend.DeleteFriendRequestDto;
 import com.example.AIChat.dto.request.friend.PatchFriendRequestDto;
 import com.example.AIChat.dto.request.friend.PostFriendRequestDto;
 import com.example.AIChat.dto.response.friend.DeleteFriendResponseDto;
@@ -67,12 +66,12 @@ public class FriendController {
         return response;
     }
 
-    @DeleteMapping("/myfriend/drop")
+    @DeleteMapping("/drop/{nickname}")
     public ResponseEntity<? super DeleteFriendResponseDto> deleteFriend(
         @AuthenticationPrincipal String loginId,
-        @RequestBody @Valid DeleteFriendRequestDto requestBody
+        @PathVariable String nickname
     ) {
-        ResponseEntity<? super DeleteFriendResponseDto> response = friendService.deleteFriend(requestBody, loginId);
+        ResponseEntity<? super DeleteFriendResponseDto> response = friendService.deleteFriend(nickname, loginId);
         return response;
     }
 

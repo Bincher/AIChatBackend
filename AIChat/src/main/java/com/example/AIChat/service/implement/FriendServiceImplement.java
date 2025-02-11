@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.example.AIChat.dto.request.friend.DeleteFriendRequestDto;
 import com.example.AIChat.dto.request.friend.PatchFriendRequestDto;
 import com.example.AIChat.dto.request.friend.PostFriendRequestDto;
 import com.example.AIChat.dto.response.ResponseDto;
@@ -188,16 +187,16 @@ public class FriendServiceImplement implements FriendService{
     }
 
     @Override
-    public ResponseEntity<? super DeleteFriendResponseDto> deleteFriend(DeleteFriendRequestDto dto, String loginId) {
+    public ResponseEntity<? super DeleteFriendResponseDto> deleteFriend(String nickname, String loginId) {
         try {
-            boolean existsFriend = userRepository.existsByNickname(dto.getNickname());
+            boolean existsFriend = userRepository.existsByNickname(nickname);
             if(!existsFriend) return GetUserListResponseDto.noExistUser();
 
             boolean existsUser = userRepository.existsByLoginId(loginId);
             if(!existsUser) return GetUserListResponseDto.noExistUser();
 
             Integer friendId = getUserIdByLoginId(loginId);
-            Integer userId = getUserIdByNickname(dto.getNickname());
+            Integer userId = getUserIdByNickname(nickname);
 
             FriendshipEntity friendshipEntity = friendshipRepository.findByUserIdAndFriendId(userId, friendId);
             FriendshipEntity reverseFriendshipEntity = friendshipRepository.findByUserIdAndFriendId(friendId, userId);
