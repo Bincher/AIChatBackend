@@ -1,17 +1,18 @@
 package com.example.AIChat.controller;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.AIChat.dto.request.user.DeleteFriendRequestDto;
-import com.example.AIChat.dto.request.user.GetUserListRequestDto;
 import com.example.AIChat.dto.request.user.PatchFriendRequestDto;
 import com.example.AIChat.dto.request.user.PostFriendRequestDto;
 import com.example.AIChat.dto.response.user.DeleteFriendResponseDto;
@@ -32,12 +33,12 @@ public class UserController {
 
     private final UserService userService;
     
-    @PostMapping("/nickname")
+    @GetMapping("/nickname/{nickname}")
     public ResponseEntity<? super GetUserListResponseDto> getUserList(
         @AuthenticationPrincipal String loginId,
-        @RequestBody @Valid GetUserListRequestDto requestBody
+        @PathVariable String nickname
     ) {
-        ResponseEntity<? super GetUserListResponseDto> response = userService.getUserList(requestBody, loginId);
+        ResponseEntity<? super GetUserListResponseDto> response = userService.getUserList(nickname, loginId);
         return response;
     }
 

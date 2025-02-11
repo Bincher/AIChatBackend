@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.AIChat.dto.request.user.DeleteFriendRequestDto;
-import com.example.AIChat.dto.request.user.GetUserListRequestDto;
 import com.example.AIChat.dto.request.user.PatchFriendRequestDto;
 import com.example.AIChat.dto.request.user.PostFriendRequestDto;
 import com.example.AIChat.dto.response.ResponseDto;
@@ -47,13 +46,13 @@ public class UserServiceImplement implements UserService{
     }
 
     @Override
-    public ResponseEntity<? super GetUserListResponseDto> getUserList(GetUserListRequestDto dto, String loginId) {
+    public ResponseEntity<? super GetUserListResponseDto> getUserList(String nickname, String loginId) {
         
         List<UserEntity> userEntities = new ArrayList<>();
         
         try{
 
-            userEntities = userRepository.findByNicknameContainsOrderById(dto.getNickname());
+            userEntities = userRepository.findByNicknameContainsOrderById(nickname);
 
             Integer currentUserId = getUserIdByLoginId(loginId);
             userEntities = userEntities.stream()

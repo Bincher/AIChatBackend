@@ -14,20 +14,20 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FriendDto {
+public class FriendListItem {
     private String nickname;
     private String profileImage;
 
-    public FriendDto(UserEntity user) {
+    public FriendListItem(UserEntity user) {
         this.nickname = user.getNickname();
         this.profileImage = user.getProfileImage();
     }
 
     // 정적 메서드: UserEntity 리스트를 FriendDto 리스트로 변환
-    public static List<FriendDto> getList(List<UserEntity> userEntities) {
-        List<FriendDto> list = new ArrayList<>();
+    public static List<FriendListItem> getList(List<UserEntity> userEntities) {
+        List<FriendListItem> list = new ArrayList<>();
         for (UserEntity user : userEntities) {
-            list.add(new FriendDto(user));
+            list.add(new FriendListItem(user));
         }
         return list;
     }

@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.example.AIChat.common.ResponseCode;
 import com.example.AIChat.common.ResponseMessage;
-import com.example.AIChat.dto.object.FriendDto;
+import com.example.AIChat.dto.object.FriendListItem;
 import com.example.AIChat.dto.response.ResponseDto;
 import com.example.AIChat.entity.UserEntity;
 
@@ -16,15 +16,15 @@ import lombok.Getter;
 @Getter
 public class GetInviteFriendResponseDto extends ResponseDto{
 
-    private List<FriendDto> friends;
+    private List<FriendListItem> friends;
 
-    private GetInviteFriendResponseDto(List<FriendDto> friends){
+    private GetInviteFriendResponseDto(List<FriendListItem> friends){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.friends = friends; 
     }
 
     public static ResponseEntity<GetInviteFriendResponseDto> success(List<UserEntity> userEntities){
-        List<FriendDto> friends = FriendDto.getList(userEntities);
+        List<FriendListItem> friends = FriendListItem.getList(userEntities);
         GetInviteFriendResponseDto result = new GetInviteFriendResponseDto(friends);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
