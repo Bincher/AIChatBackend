@@ -12,11 +12,16 @@ import org.springframework.stereotype.Service;
 import com.example.AIChat.dto.object.ChatRoomWithUsersDto;
 import com.example.AIChat.dto.object.ChatUserDto;
 import com.example.AIChat.dto.projection.ChatRoomUserProjection;
+import com.example.AIChat.dto.request.chat.CreateChatRoomRequestDto;
 import com.example.AIChat.dto.response.ResponseDto;
+import com.example.AIChat.dto.response.chat.CreateChatRoomResponseDto;
 import com.example.AIChat.dto.response.chat.GetChatRoomListResponseDto;
+import com.example.AIChat.entity.ChatRoomEntity;
+import com.example.AIChat.entity.ChatRoomUsersEntity;
 import com.example.AIChat.entity.MessageEntity;
 import com.example.AIChat.entity.UserEntity;
 import com.example.AIChat.repository.ChatRoomRepository;
+import com.example.AIChat.repository.ChatRoomUsersRepository;
 import com.example.AIChat.repository.MessageRepository;
 import com.example.AIChat.repository.UserRepository;
 import com.example.AIChat.service.ChatService;
@@ -27,9 +32,17 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ChatServiceImplement implements ChatService{
+
     private final MessageRepository messageRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomUsersRepository chatRoomUsersRepository;
     private final UserRepository userRepository;
+
+    public Integer getUserIdByNickname(String nickname) {
+        return userRepository.findIdByNickname(nickname)
+                .map(UserEntity::getId)
+                .orElseThrow(() -> new EntityNotFoundException(nickname));
+    }
 
     public Integer getUserIdByLoginId(String loginId) {
         return userRepository.findIdByLoginId(loginId)
@@ -78,6 +91,36 @@ public class ChatServiceImplement implements ChatService{
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
+    }
+
+    @Override
+    public ResponseEntity<? super CreateChatRoomResponseDto> createChatRoom(CreateChatRoomRequestDto dto, String loginId) {
+        try {
+            String roomName = dto.getRoomName();
+            dto.setRoomName(roomName);
+            ChatRoomEntity chatRoomEntity = new ChatRoomEntity(dto);
+            chatRoomRepository.save(chatRoomEntity);
+
+            Integer chatRoomId = chatRoomEntity.getId();
+            List<ChatRoomUsersEntity> chatRoomUsers = new ArrayList<>();
+
+            for (String userNickname : dto.getUserNicknames()) {
+                Integer userId = getUserIdByNickname(userNickname);
+                ChatRoomUsersEntity chatRoomUser = new ChatRoomUsersEntity(chatRoomId, userId);
+                chatRoomUsers.add(chatRoomUser);
+            }
+            Integer userId = getUserIdByLoginId(loginId);
+            ChatRoomUsersEntity chatRoomUser = new ChatRoomUsersEntity(chatRoomId, userId);
+            chatRoomUsers.add(chatRoomUser);
+
+            chatRoomUsersRepository.saveAll(chatRoomUsers);
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return CreateChatRoomResponseDto.success();
     }
     
 }
