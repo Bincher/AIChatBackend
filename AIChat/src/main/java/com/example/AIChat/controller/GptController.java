@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.AIChat.dto.request.gpt.GptForFactCheckRequestDto;
 import com.example.AIChat.dto.request.gpt.GptForOrthographyRequestDto;
+import com.example.AIChat.dto.request.gpt.GptForRecommendTextRequestDto;
 import com.example.AIChat.dto.response.gpt.GptForFactCheckResponseDto;
 import com.example.AIChat.dto.response.gpt.GptForOrthographyResponseDto;
+import com.example.AIChat.dto.response.gpt.GptForRecommendTextResponseDto;
 import com.example.AIChat.service.GptService;
 
 import lombok.RequiredArgsConstructor;
@@ -44,5 +46,13 @@ public class GptController {
     ) {
         // GptService 호출하여 맞춤법 검사 수행
         return gptService.gptForFactCheck(requestDto.getPrompt());
+    }
+
+    @PostMapping("/recommend-text")
+    public ResponseEntity<GptForRecommendTextResponseDto> getRecommendText(
+        @RequestBody GptForRecommendTextRequestDto requestDto
+    ) {
+        // GptService 호출하여 추천 답장 생성
+        return gptService.gptForRecommendText(requestDto.getRoomId());
     }
 }
