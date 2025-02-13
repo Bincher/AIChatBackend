@@ -44,8 +44,8 @@ public class WebSecurityConfig{
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  
         )
         .authorizeHttpRequests(request -> request
-            .requestMatchers("/api/v1/auth/**", "/api/v1/chat/**", "/api/v1/search/**", "/api/v1/user/**", "/api/v1/friend/**","/file/**", "/ws/chat").permitAll()
-            .requestMatchers(HttpMethod.GET,"/api/v1/auth/**", "/api/v1/chat/**","/api/v1/user/*", "/api/v1/friend/**", "/ws/chat").permitAll()
+            .requestMatchers("/api/v1/auth/**", "/api/v1/chat/**", "/api/v1/search/**", "/api/v1/user/**", "/api/v1/friend/**", "/api/v1/gpt/**","/file/**", "/ws/chat").permitAll()
+            .requestMatchers(HttpMethod.GET,"/api/v1/auth/**", "/api/v1/chat/**","/api/v1/user/*", "/api/v1/friend/**", "/api/v1/gpt/**", "/ws/chat").permitAll()
             .anyRequest().authenticated()
         )
         .exceptionHandling(exceptionHandling -> exceptionHandling
@@ -83,3 +83,4 @@ class FailedAuthenticationEntryPoint implements AuthenticationEntryPoint{
     }
 
 }
+
