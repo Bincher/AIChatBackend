@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GptForRecommendTextRequestDto {
     private String roomId;
+    private String nickname;
 }

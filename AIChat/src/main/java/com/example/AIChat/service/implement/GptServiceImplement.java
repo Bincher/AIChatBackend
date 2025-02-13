@@ -2,6 +2,10 @@ package com.example.AIChat.service.implement;
 
 import com.example.AIChat.common.ResponseCode;
 import com.example.AIChat.dto.object.Message;
+import com.example.AIChat.dto.request.gpt.GptForFactCheckRequestDto;
+import com.example.AIChat.dto.request.gpt.GptForOrthographyRequestDto;
+import com.example.AIChat.dto.request.gpt.GptForRecommendTextRequestDto;
+import com.example.AIChat.dto.request.gpt.GptForSummaryRequestDto;
 import com.example.AIChat.dto.request.gpt.GptRequestDto;
 import com.example.AIChat.dto.response.gpt.GptForFactCheckResponseDto;
 import com.example.AIChat.dto.response.gpt.GptForOrthographyResponseDto;
@@ -42,6 +46,7 @@ public class GptServiceImplement implements GptService{
     private final MessageRepository messageRepository;
 
     public String getChatResponse(String prompt) {
+        
         // 비즈니스 로직: GPT 요청 생성 및 처리
         GptRequestDto request = new GptRequestDto(
                 model, prompt, 1, 256, 1, 2, 2);
@@ -57,7 +62,11 @@ public class GptServiceImplement implements GptService{
     }
 
     @Override
-    public ResponseEntity<GptForOrthographyResponseDto> gptForOrthography(String prompt) {
+    public ResponseEntity<? super GptForOrthographyResponseDto> gptForOrthography(GptForOrthographyRequestDto dto) {
+
+        String prompt = dto.getPrompt();
+        if(prompt == null) return GptForOrthographyResponseDto.noExistPrompt();
+
         // 1. GPT 요청 데이터 생성
         GptRequestDto requestDto = new GptRequestDto(
             model,
@@ -78,9 +87,7 @@ public class GptServiceImplement implements GptService{
 
         // 3. 응답 데이터 처리
         if (responseDto == null || responseDto.getChoices().isEmpty()) {
-            return ResponseEntity.status(500).body(new GptForOrthographyResponseDto(
-                "GPT 응답이 비어있습니다.", prompt
-            ));
+            return GptForOrthographyResponseDto.noExistResult();
         }
 
         // GPT가 반환한 교정된 텍스트 추출
@@ -91,7 +98,11 @@ public class GptServiceImplement implements GptService{
     }
 
     @Override
-    public ResponseEntity<GptForFactCheckResponseDto> gptForFactCheck(String prompt) {
+    public ResponseEntity<? super GptForFactCheckResponseDto> gptForFactCheck(GptForFactCheckRequestDto dto) {
+
+        String prompt = dto.getPrompt();
+        if(prompt == null) return GptForFactCheckResponseDto.noExistPrompt();
+
         // 1. GPT 요청 데이터 생성
         GptRequestDto requestDto = new GptRequestDto(
             model4,
@@ -112,9 +123,7 @@ public class GptServiceImplement implements GptService{
 
         // 3. 응답 데이터 처리
         if (responseDto == null || responseDto.getChoices().isEmpty()) {
-            return ResponseEntity.status(500).body(new GptForFactCheckResponseDto(
-                "GPT 응답이 비어있습니다.", prompt
-            ));
+            return GptForFactCheckResponseDto.noExistResult();
         }
 
         // GPT가 반환한 교정된 텍스트 추출
@@ -124,7 +133,11 @@ public class GptServiceImplement implements GptService{
         return GptForFactCheckResponseDto.success(correctedText, prompt);
     }
     
-    public ResponseEntity<GptForRecommendTextResponseDto> gptForRecommendText(String roomId) {
+    public ResponseEntity<? super GptForRecommendTextResponseDto> gptForRecommendText(GptForRecommendTextRequestDto dto) {
+
+        String roomId = dto.getRoomId();
+        String nickname = dto.getNickname();
+
         // 1. MongoDB에서 채팅 내역 가져오기
         List<MessageEntity> chatHistory = messageRepository.findAllByRoomId(roomId);
         if (chatHistory.isEmpty()) {
@@ -146,13 +159,13 @@ public class GptServiceImplement implements GptService{
         // 3. GPT 요청 데이터 생성
         List<Message> messages = new ArrayList<>();
         // 시스템 메시지 추가: 한국어 응답 요청
-        messages.add(new Message("system", "모든 응답을 한국어로 제공해주세요. 다음 대화내역을 보고 상황에 맞는 답변을 조언해주세요."));
+        messages.add(new Message("system", "모든 응답을 한국어로 제공해주세요. 다음 대화내역을 보고 "+ nickname +"이 할 상황에 맞는 답변을 조언해주세요."));
         // 사용자 대화 기록 추가
         messages.add(new Message("user", chatHistoryString));
                 
         GptRequestDto requestDto = new GptRequestDto(
-            model,
-            chatHistoryString,
+            model4,
+            messages,
             1,   // temperature: 적당한 창의성
             256,   // maxTokens: 응답 길이 제한
             1,     // topP: 확률 분포 기반 샘플링
@@ -169,12 +182,7 @@ public class GptServiceImplement implements GptService{
 
         // 4. 응답 데이터 처리
         if (responseDto == null || responseDto.getChoices().isEmpty()) {
-            return ResponseEntity.status(500).body(new GptForRecommendTextResponseDto(
-                ResponseCode.DATABASE_ERROR,
-                "Failed to get a response from GPT.",
-                null,
-                roomId
-            ));
+            return GptForFactCheckResponseDto.noExistResult();
         }
 
         String recommendedText = responseDto.getChoices().get(0).getMessage().getContent();
@@ -184,7 +192,10 @@ public class GptServiceImplement implements GptService{
     }
 
     @Override
-    public ResponseEntity<GptForSummaryResponseDto> gptForSummary(String roomId) {
+    public ResponseEntity<? super GptForSummaryResponseDto> gptForSummary(GptForSummaryRequestDto dto) {
+
+        String roomId = dto.getRoomId();
+
         // 1. MongoDB에서 채팅 내역 가져오기
         List<MessageEntity> chatHistory = messageRepository.findAllByRoomId(roomId);
         if (chatHistory.isEmpty()) {
@@ -206,14 +217,14 @@ public class GptServiceImplement implements GptService{
         // 3. GPT 요청 데이터 생성
         List<Message> messages = new ArrayList<>();
         // 시스템 메시지 추가: 한국어 응답 요청
-        messages.add(new Message("system", "모든 응답을 한국어로 제공해주세요. 다음 대화내역을 보고 상황에 맞는 답변을 조언해주세요."));
+        messages.add(new Message("system", "다음은 채팅방에서 여러명이 얘기한 내용들입니다. 위 내용들을 한 줄로 요약해주세요. 이것은 추천 답변을 요구하는 것이 아닌 요약을 요구하는 것입니다."));
         // 사용자 대화 기록 추가
         messages.add(new Message("user", chatHistoryString));
                 
         GptRequestDto requestDto = new GptRequestDto(
             model,
-            chatHistoryString,
-            1,   // temperature: 적당한 창의성
+            messages,
+            0,   // temperature: 적당한 창의성
             256,   // maxTokens: 응답 길이 제한
             1,     // topP: 확률 분포 기반 샘플링
             0,     // frequencyPenalty: 반복 억제 없음

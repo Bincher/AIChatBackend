@@ -24,4 +24,14 @@ public class GptForFactCheckResponseDto extends ResponseDto{
         GptForFactCheckResponseDto result = new GptForFactCheckResponseDto(correctedText, originalText);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+
+    public static ResponseEntity<ResponseDto> noExistPrompt(){
+        ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_PROMPT, ResponseMessage.NOT_EXISTED_PROMPT);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    }
+
+    public static ResponseEntity<ResponseDto> noExistResult(){
+        ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_RESULT, ResponseMessage.NOT_EXISTED_RESULT);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    }
 }

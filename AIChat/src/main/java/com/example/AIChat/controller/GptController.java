@@ -35,30 +35,30 @@ public class GptController {
     }
 
     @PostMapping("/orthography")
-    public ResponseEntity<GptForOrthographyResponseDto> gptForOrthography(
-        @RequestBody GptForOrthographyRequestDto requestDto
+    public ResponseEntity<? super GptForOrthographyResponseDto> gptForOrthography(
+        @RequestBody GptForOrthographyRequestDto requestBody
     ) {
-        return gptService.gptForOrthography(requestDto.getPrompt());
+        return gptService.gptForOrthography(requestBody);
     }
     
     @PostMapping("/fact-check")
-    public ResponseEntity<GptForFactCheckResponseDto> gptForFactCheck(
-        @RequestBody GptForFactCheckRequestDto requestDto
+    public ResponseEntity<? super GptForFactCheckResponseDto> gptForFactCheck(
+        @RequestBody GptForFactCheckRequestDto requestBody
     ) {
-        return gptService.gptForFactCheck(requestDto.getPrompt());
+        return gptService.gptForFactCheck(requestBody);
     }
 
     @PostMapping("/recommend-text")
-    public ResponseEntity<GptForRecommendTextResponseDto> getForRecommendText(
-        @RequestBody GptForRecommendTextRequestDto requestDto
+    public ResponseEntity<? super GptForRecommendTextResponseDto> getForRecommendText(
+        @RequestBody GptForRecommendTextRequestDto requestBody
     ) {
-        return gptService.gptForRecommendText(requestDto.getRoomId());
+        return gptService.gptForRecommendText(requestBody);
     }
 
     @PostMapping("/summary")
-    public ResponseEntity<GptForSummaryResponseDto> getForSummary(
-        @RequestBody GptForSummaryRequestDto requestDto
+    public ResponseEntity<? super GptForSummaryResponseDto> getForSummary(
+        @RequestBody GptForSummaryRequestDto requestBody
     ) {
-        return gptService.gptForSummary(requestDto.getRoomId());
+        return gptService.gptForSummary(requestBody);
     }
 }

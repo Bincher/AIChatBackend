@@ -33,4 +33,9 @@ public class GptForSummaryResponseDto extends ResponseDto {
         );
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+
+    public static ResponseEntity<ResponseDto> noExistResult(){
+        ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_RESULT, ResponseMessage.NOT_EXISTED_RESULT);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    }
 }

@@ -16,6 +16,8 @@ public interface ResponseMessage {
     String DISAGREED_PERSONAL = "Disagreed personal";
     String EXISTED_FRIEND = "Existed Friend";
     String DUPLICATED_POSTING = "DUplicated Posting";
+    String NOT_EXISTED_PROMPT = "Not existed Prompt";
+    String NOT_EXISTED_RESULT = "NR";
 
     // HTTP Status 401
     String SIGN_IN_FAIL = "Login information mismatch";
