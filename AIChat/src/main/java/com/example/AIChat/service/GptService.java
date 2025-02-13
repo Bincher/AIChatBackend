@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import com.example.AIChat.dto.response.gpt.GptForFactCheckResponseDto;
 import com.example.AIChat.dto.response.gpt.GptForOrthographyResponseDto;
 import com.example.AIChat.dto.response.gpt.GptForRecommendTextResponseDto;
+import com.example.AIChat.dto.response.gpt.GptForSummaryResponseDto;
 
 public interface GptService {
 
@@ -12,4 +13,5 @@ public interface GptService {
     public ResponseEntity<GptForOrthographyResponseDto> gptForOrthography(String prompt);
     public ResponseEntity<GptForFactCheckResponseDto> gptForFactCheck(String prompt);
     public ResponseEntity<GptForRecommendTextResponseDto> gptForRecommendText(String roomId);
+    public ResponseEntity<GptForSummaryResponseDto> gptForSummary(String roomId);
 }

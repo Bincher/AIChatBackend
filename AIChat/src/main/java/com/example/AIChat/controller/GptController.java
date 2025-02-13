@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.AIChat.dto.request.gpt.GptForFactCheckRequestDto;
 import com.example.AIChat.dto.request.gpt.GptForOrthographyRequestDto;
 import com.example.AIChat.dto.request.gpt.GptForRecommendTextRequestDto;
+import com.example.AIChat.dto.request.gpt.GptForSummaryRequestDto;
 import com.example.AIChat.dto.response.gpt.GptForFactCheckResponseDto;
 import com.example.AIChat.dto.response.gpt.GptForOrthographyResponseDto;
 import com.example.AIChat.dto.response.gpt.GptForRecommendTextResponseDto;
+import com.example.AIChat.dto.response.gpt.GptForSummaryResponseDto;
 import com.example.AIChat.service.GptService;
 
 import lombok.RequiredArgsConstructor;
@@ -36,7 +38,6 @@ public class GptController {
     public ResponseEntity<GptForOrthographyResponseDto> gptForOrthography(
         @RequestBody GptForOrthographyRequestDto requestDto
     ) {
-        // GptService 호출하여 맞춤법 검사 수행
         return gptService.gptForOrthography(requestDto.getPrompt());
     }
     
@@ -44,15 +45,20 @@ public class GptController {
     public ResponseEntity<GptForFactCheckResponseDto> gptForFactCheck(
         @RequestBody GptForFactCheckRequestDto requestDto
     ) {
-        // GptService 호출하여 맞춤법 검사 수행
         return gptService.gptForFactCheck(requestDto.getPrompt());
     }
 
     @PostMapping("/recommend-text")
-    public ResponseEntity<GptForRecommendTextResponseDto> getRecommendText(
+    public ResponseEntity<GptForRecommendTextResponseDto> getForRecommendText(
         @RequestBody GptForRecommendTextRequestDto requestDto
     ) {
-        // GptService 호출하여 추천 답장 생성
         return gptService.gptForRecommendText(requestDto.getRoomId());
+    }
+
+    @PostMapping("/summary")
+    public ResponseEntity<GptForSummaryResponseDto> getForSummary(
+        @RequestBody GptForSummaryRequestDto requestDto
+    ) {
+        return gptService.gptForSummary(requestDto.getRoomId());
     }
 }

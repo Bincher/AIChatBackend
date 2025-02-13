@@ -6,6 +6,7 @@ import com.example.AIChat.dto.request.gpt.GptRequestDto;
 import com.example.AIChat.dto.response.gpt.GptForFactCheckResponseDto;
 import com.example.AIChat.dto.response.gpt.GptForOrthographyResponseDto;
 import com.example.AIChat.dto.response.gpt.GptForRecommendTextResponseDto;
+import com.example.AIChat.dto.response.gpt.GptForSummaryResponseDto;
 import com.example.AIChat.dto.response.gpt.GptResponseDto;
 import com.example.AIChat.entity.MessageEntity;
 import com.example.AIChat.repository.MessageRepository;
@@ -180,5 +181,65 @@ public class GptServiceImplement implements GptService{
 
         // 5. 결과 반환
         return GptForRecommendTextResponseDto.success(recommendedText, roomId);
+    }
+
+    @Override
+    public ResponseEntity<GptForSummaryResponseDto> gptForSummary(String roomId) {
+        // 1. MongoDB에서 채팅 내역 가져오기
+        List<MessageEntity> chatHistory = messageRepository.findAllByRoomId(roomId);
+        if (chatHistory.isEmpty()) {
+            return ResponseEntity.badRequest().body(new GptForSummaryResponseDto(
+                ResponseCode.VALIDATION_FAILED,
+                "No chat history found for the given roomId.",
+                null,
+                roomId
+            ));
+        }
+
+        // 2. 채팅 내역을 GPT API 요청 형식으로 변환
+        String chatHistoryString = chatHistory.stream()
+            .map(message -> message.getSender() + ": " + message.getContent())
+            .collect(Collectors.joining("\n"));
+
+        // System.out.println(chatHistoryString);
+
+        // 3. GPT 요청 데이터 생성
+        List<Message> messages = new ArrayList<>();
+        // 시스템 메시지 추가: 한국어 응답 요청
+        messages.add(new Message("system", "모든 응답을 한국어로 제공해주세요. 다음 대화내역을 보고 상황에 맞는 답변을 조언해주세요."));
+        // 사용자 대화 기록 추가
+        messages.add(new Message("user", chatHistoryString));
+                
+        GptRequestDto requestDto = new GptRequestDto(
+            model,
+            chatHistoryString,
+            1,   // temperature: 적당한 창의성
+            256,   // maxTokens: 응답 길이 제한
+            1,     // topP: 확률 분포 기반 샘플링
+            0,     // frequencyPenalty: 반복 억제 없음
+            0      // presencePenalty: 새로운 주제 유도 없음
+        );
+
+        // 3. GPT API 호출
+        GptResponseDto responseDto = restTemplate.postForObject(
+            apiUrl,
+            requestDto,
+            GptResponseDto.class
+        );
+
+        // 4. 응답 데이터 처리
+        if (responseDto == null || responseDto.getChoices().isEmpty()) {
+            return ResponseEntity.status(500).body(new GptForSummaryResponseDto(
+                ResponseCode.DATABASE_ERROR,
+                "Failed to get a response from GPT.",
+                null,
+                roomId
+            ));
+        }
+
+        String recommendedText = responseDto.getChoices().get(0).getMessage().getContent();
+
+        // 5. 결과 반환
+        return GptForSummaryResponseDto.success(recommendedText, roomId);
     }
 }
