@@ -3,8 +3,10 @@ package com.example.AIChat.service.implement;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,8 +14,10 @@ import org.springframework.stereotype.Service;
 import com.example.AIChat.dto.object.ChatRoomWithUsersDto;
 import com.example.AIChat.dto.object.ChatUserDto;
 import com.example.AIChat.dto.projection.ChatRoomUserProjection;
+import com.example.AIChat.dto.request.chat.ChatRoomInformationRequestDto;
 import com.example.AIChat.dto.request.chat.CreateChatRoomRequestDto;
 import com.example.AIChat.dto.response.ResponseDto;
+import com.example.AIChat.dto.response.chat.ChatRoomInformationResponseDto;
 import com.example.AIChat.dto.response.chat.CreateChatRoomResponseDto;
 import com.example.AIChat.dto.response.chat.GetChatRoomListResponseDto;
 import com.example.AIChat.entity.ChatRoomEntity;
@@ -121,6 +125,46 @@ public class ChatServiceImplement implements ChatService{
         }
 
         return CreateChatRoomResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super ChatRoomInformationResponseDto> chatRoomInformation(ChatRoomInformationRequestDto dto, String loginId) {
+        try {
+            Integer userId = getUserIdByLoginId(loginId);
+
+            boolean existedUser = userRepository.existsById(userId);
+            if (!existedUser) {
+                return ChatRoomInformationResponseDto.notExistedUser();
+            }
+
+            Integer chatRoomId = Integer.parseInt(dto.getChatRoomId());
+            boolean existedChatRoom = chatRoomRepository.existsById(chatRoomId);
+            if (!existedChatRoom) {
+                return ChatRoomInformationResponseDto.notExistedChat();
+            }
+
+            List<ChatRoomUserProjection> projections = chatRoomRepository.findChatRoomWithRoomId(chatRoomId);
+
+            if (projections.isEmpty()) {
+                return ChatRoomInformationResponseDto.notExistedChat();
+            }
+
+            ChatRoomWithUsersDto chatRoom = new ChatRoomWithUsersDto(
+                projections.get(0).getChatRoomId(),
+                projections.get(0).getRoomName(),
+                new ArrayList<>()
+            );
+
+            for (ChatRoomUserProjection projection : projections) {
+                chatRoom.getUsers().add(new ChatUserDto(projection.getNickname(), projection.getProfileImage()));
+            }
+
+            return ChatRoomInformationResponseDto.success(chatRoom);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
     }
     
 }

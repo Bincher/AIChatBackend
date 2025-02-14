@@ -25,4 +25,13 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, Intege
         )
         """, nativeQuery = true)
     List<ChatRoomUserProjection> findChatRoomsWithUsers(@Param("userId") Integer userId);
+
+    @Query(value = """
+        SELECT cr.id AS chatRoomId, cr.room_name AS roomName, u.nickname AS nickname, u.profile_image AS profileImage 
+        FROM chat_room_users cru
+        JOIN chat_room cr ON cru.chat_room_id = cr.id
+        JOIN user u ON cru.user_id = u.id
+        WHERE cru.chat_room_id = :chatRoomId
+    """, nativeQuery = true)
+    List<ChatRoomUserProjection> findChatRoomWithRoomId(@Param("chatRoomId") Integer chatRoomId);
 }

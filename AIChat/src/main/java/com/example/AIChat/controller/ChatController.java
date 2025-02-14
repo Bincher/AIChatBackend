@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.AIChat.dto.request.chat.ChatRoomInformationRequestDto;
 import com.example.AIChat.dto.request.chat.CreateChatRoomRequestDto;
+import com.example.AIChat.dto.response.chat.ChatRoomInformationResponseDto;
 import com.example.AIChat.dto.response.chat.CreateChatRoomResponseDto;
 import com.example.AIChat.dto.response.chat.GetChatRoomListResponseDto;
 import com.example.AIChat.entity.MessageEntity;
@@ -55,6 +57,15 @@ public class ChatController {
         @RequestBody @Valid CreateChatRoomRequestDto requestBody
     ) {
         ResponseEntity<? super CreateChatRoomResponseDto> response = chatService.createChatRoom(requestBody, loginId);
+        return response;
+    }
+
+    @PostMapping("/chat-room/this")
+    public ResponseEntity<? super ChatRoomInformationResponseDto> ChatRoomInformation(
+        @AuthenticationPrincipal String loginId,
+        @RequestBody @Valid ChatRoomInformationRequestDto requestBody
+    ) {
+        ResponseEntity<? super ChatRoomInformationResponseDto> response = chatService.chatRoomInformation(requestBody, loginId);
         return response;
     }
 }
