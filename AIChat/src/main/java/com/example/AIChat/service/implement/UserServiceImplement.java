@@ -58,7 +58,7 @@ public class UserServiceImplement implements UserService{
         boolean isFriend = false;
 
         try{
-            userEntity = userRepository.findByLoginId(loginId);
+            userEntity = userRepository.findByNickname(dto.getNickname());
             if(userEntity == null) return GetSignInUserResponseDto.notExistUser();
 
             Integer friendId = getUserIdByNickname(dto.getNickname());

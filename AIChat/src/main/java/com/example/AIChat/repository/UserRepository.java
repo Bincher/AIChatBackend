@@ -27,4 +27,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     List<UserEntity> findByNicknameContainsOrderById(String nickname);
 
+    UserEntity findByNickname(String nickname);
+
 }
