@@ -23,7 +23,6 @@ public class FriendListItem {
         this.profileImage = user.getProfileImage();
     }
 
-    // 정적 메서드: UserEntity 리스트를 FriendDto 리스트로 변환
     public static List<FriendListItem> getList(List<UserEntity> userEntities) {
         List<FriendListItem> list = new ArrayList<>();
         for (UserEntity user : userEntities) {

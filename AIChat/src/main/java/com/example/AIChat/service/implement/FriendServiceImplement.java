@@ -7,15 +7,15 @@ import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.example.AIChat.dto.request.friend.PatchFriendRequestDto;
-import com.example.AIChat.dto.request.friend.PostFriendRequestDto;
+import com.example.AIChat.dto.request.friend.AcceptFriendRequestDto;
+import com.example.AIChat.dto.request.friend.InviteFriendRequestDto;
 import com.example.AIChat.dto.response.ResponseDto;
 import com.example.AIChat.dto.response.friend.DeleteFriendResponseDto;
 import com.example.AIChat.dto.response.friend.GetInviteFriendResponseDto;
 import com.example.AIChat.dto.response.friend.GetMyFriendResponseDto;
 import com.example.AIChat.dto.response.friend.GetUserListResponseDto;
-import com.example.AIChat.dto.response.friend.PatchFriendResponseDto;
-import com.example.AIChat.dto.response.friend.PostFriendResponseDto;
+import com.example.AIChat.dto.response.friend.AcceptFriendResponseDto;
+import com.example.AIChat.dto.response.friend.InviteFriendResponseDto;
 import com.example.AIChat.entity.FriendshipEntity;
 import com.example.AIChat.entity.UserEntity;
 import com.example.AIChat.repository.FriendshipRepository;
@@ -67,14 +67,14 @@ public class FriendServiceImplement implements FriendService{
     }
 
     @Override
-    public ResponseEntity<? super PostFriendResponseDto> postFriend(PostFriendRequestDto dto, String loginId) {
+    public ResponseEntity<? super InviteFriendResponseDto> inviteFriend(InviteFriendRequestDto dto, String loginId) {
 
         try {
             boolean existsFriend = userRepository.existsByNickname(dto.getNickname());
-            if(!existsFriend) return GetUserListResponseDto.noExistUser();
+            if(!existsFriend) return InviteFriendResponseDto.noExistUser();
 
             boolean existsUser = userRepository.existsByLoginId(loginId);
-            if(!existsUser) return GetUserListResponseDto.noExistUser();
+            if(!existsUser) return InviteFriendResponseDto.noExistUser();
 
             Integer userId = getUserIdByLoginId(loginId);
             Integer friendId = getUserIdByNickname(dto.getNickname());
@@ -82,28 +82,27 @@ public class FriendServiceImplement implements FriendService{
             FriendshipEntity existingFriendship = friendshipRepository.findByUserIdAndFriendId(friendId, userId);
 
             if (existingFriendship != null) {
-                // 3-1. STATUS 확인
+
                 String status = existingFriendship.getStatus();
                 if ("PENDING".equals(status)) {
-                    // PENDING 상태 -> ACCEPTED로 변경
+
                     existingFriendship.setStatus("ACCEPTED");
                     friendshipRepository.save(existingFriendship);
                     FriendshipEntity reverseFriendship = new FriendshipEntity(userId, friendId);
                     reverseFriendship.setStatus("ACCEPTED");
                     friendshipRepository.save(reverseFriendship);
-                    return PostFriendResponseDto.success();
+
+                    return InviteFriendResponseDto.success();
                 } else if ("ACCEPTED".equals(status)) {
-                    // 이미 친구 상태
-                    return PostFriendResponseDto.existedFriend();
+                    return InviteFriendResponseDto.existedFriend();
                 }
             } else {
 
                 FriendshipEntity duplicatedPosting = friendshipRepository.findByUserIdAndFriendId(userId, friendId);
                 if(duplicatedPosting != null){
-                    return PostFriendResponseDto.duplicatedPosting();
+                    return InviteFriendResponseDto.duplicatedPosting();
                 }
 
-                // 4. 새로운 친구 요청 생성
                 FriendshipEntity newFriendship = new FriendshipEntity(userId, friendId);
                 friendshipRepository.save(newFriendship);
             }
@@ -112,33 +111,30 @@ public class FriendServiceImplement implements FriendService{
             return ResponseDto.databaseError();
         }
 
-        return PostFriendResponseDto.success();
+        return InviteFriendResponseDto.success();
     }
 
     @Override
-    public ResponseEntity<? super PatchFriendResponseDto> patchFriend(PatchFriendRequestDto dto,
+    public ResponseEntity<? super AcceptFriendResponseDto> acceptFriend(AcceptFriendRequestDto dto,
             String loginId) {
         try {
             boolean existsFriend = userRepository.existsByNickname(dto.getNickname());
-            if(!existsFriend) return GetUserListResponseDto.noExistUser();
+            if(!existsFriend) return AcceptFriendResponseDto.noExistUser();
 
             boolean existsUser = userRepository.existsByLoginId(loginId);
-            if(!existsUser) return GetUserListResponseDto.noExistUser();
+            if(!existsUser) return AcceptFriendResponseDto.noExistUser();
 
             Integer userId = getUserIdByLoginId(loginId);
             Integer friendId = getUserIdByNickname(dto.getNickname());
 
             FriendshipEntity friendshipEntity = friendshipRepository.findByUserIdAndFriendId(friendId, userId);
-            System.out.println(userId);
-            System.out.println(friendId);
-            System.out.println(friendshipEntity);
             if (friendshipEntity == null) {
-                return PatchFriendResponseDto.noExistUser(); // 요청이 없으면 에러 반환
+                return AcceptFriendResponseDto.noExistUser();
             }
 
             boolean isAccept = dto.isFriendAccept();
             if (isAccept) {
-                // 수락 -> STATUS를 ACCEPTED로 변경
+
                 friendshipEntity.setStatus("ACCEPTED");
                 friendshipRepository.save(friendshipEntity);
 
@@ -146,7 +142,7 @@ public class FriendServiceImplement implements FriendService{
                 reverseFriendship.setStatus("ACCEPTED");
                 friendshipRepository.save(reverseFriendship);
             } else {
-                // 거절 -> 엔티티 삭제
+
                 friendshipRepository.delete(friendshipEntity);
             }
                 
@@ -155,7 +151,7 @@ public class FriendServiceImplement implements FriendService{
             return ResponseDto.databaseError();
         }
 
-        return PatchFriendResponseDto.success();
+        return AcceptFriendResponseDto.success();
     }
     
     @Override
@@ -168,7 +164,7 @@ public class FriendServiceImplement implements FriendService{
 
             Integer currentUserId = getUserIdByLoginId(loginId);
 
-            List<FriendshipEntity> friendships = friendshipRepository.findAcceptedFriends(currentUserId);
+            List<FriendshipEntity> friendships = friendshipRepository.findByUserIdAndStatus(currentUserId, "ACCEPTED");
 
             List<Integer> friendIds = friendships.stream()
                 .map(FriendshipEntity::getFriendId)
@@ -182,7 +178,6 @@ public class FriendServiceImplement implements FriendService{
             return ResponseDto.databaseError();
         }
 
-        // 5. 결과 반환
         return GetMyFriendResponseDto.success(friends);
     }
 
@@ -190,10 +185,10 @@ public class FriendServiceImplement implements FriendService{
     public ResponseEntity<? super DeleteFriendResponseDto> deleteFriend(String nickname, String loginId) {
         try {
             boolean existsFriend = userRepository.existsByNickname(nickname);
-            if(!existsFriend) return GetUserListResponseDto.noExistUser();
+            if(!existsFriend) return DeleteFriendResponseDto.noExistUser();
 
             boolean existsUser = userRepository.existsByLoginId(loginId);
-            if(!existsUser) return GetUserListResponseDto.noExistUser();
+            if(!existsUser) return DeleteFriendResponseDto.noExistUser();
 
             Integer friendId = getUserIdByLoginId(loginId);
             Integer userId = getUserIdByNickname(nickname);
@@ -201,7 +196,7 @@ public class FriendServiceImplement implements FriendService{
             FriendshipEntity friendshipEntity = friendshipRepository.findByUserIdAndFriendId(userId, friendId);
             FriendshipEntity reverseFriendshipEntity = friendshipRepository.findByUserIdAndFriendId(friendId, userId);
             if (friendshipEntity == null || reverseFriendshipEntity == null) {
-                return PatchFriendResponseDto.noExistUser(); // 요청이 없으면 에러 반환
+                return AcceptFriendResponseDto.noExistUser();
             }
 
             friendshipRepository.delete(friendshipEntity);
@@ -225,7 +220,7 @@ public class FriendServiceImplement implements FriendService{
 
             Integer currentUserId = getUserIdByLoginId(loginId);
 
-            List<FriendshipEntity> friendships = friendshipRepository.findInvitedUser(currentUserId);
+            List<FriendshipEntity> friendships = friendshipRepository.findByFriendIdAndStatus(currentUserId, "PENDING");
 
             List<Integer> friendIds = friendships.stream()
                 .map(FriendshipEntity::getUserId)
@@ -239,7 +234,6 @@ public class FriendServiceImplement implements FriendService{
             return ResponseDto.databaseError();
         }
 
-        // 5. 결과 반환
         return GetInviteFriendResponseDto.success(users);
     }
 }

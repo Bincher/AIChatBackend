@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.AIChat.dto.request.friend.PatchFriendRequestDto;
-import com.example.AIChat.dto.request.friend.PostFriendRequestDto;
+import com.example.AIChat.dto.request.friend.AcceptFriendRequestDto;
+import com.example.AIChat.dto.request.friend.InviteFriendRequestDto;
 import com.example.AIChat.dto.response.friend.DeleteFriendResponseDto;
 import com.example.AIChat.dto.response.friend.GetInviteFriendResponseDto;
 import com.example.AIChat.dto.response.friend.GetMyFriendResponseDto;
 import com.example.AIChat.dto.response.friend.GetUserListResponseDto;
-import com.example.AIChat.dto.response.friend.PatchFriendResponseDto;
-import com.example.AIChat.dto.response.friend.PostFriendResponseDto;
+import com.example.AIChat.dto.response.friend.AcceptFriendResponseDto;
+import com.example.AIChat.dto.response.friend.InviteFriendResponseDto;
 import com.example.AIChat.service.FriendService;
 
 import jakarta.validation.Valid;
@@ -41,20 +41,20 @@ public class FriendController {
     }
 
     @PostMapping("/request")
-    public ResponseEntity<? super PostFriendResponseDto> postFriend(
+    public ResponseEntity<? super InviteFriendResponseDto> inviteFriend(
         @AuthenticationPrincipal String loginId,
-        @RequestBody @Valid PostFriendRequestDto requestBody
+        @RequestBody @Valid InviteFriendRequestDto requestBody
     ) {
-        ResponseEntity<? super PostFriendResponseDto> response = friendService.postFriend(requestBody, loginId);
+        ResponseEntity<? super InviteFriendResponseDto> response = friendService.inviteFriend(requestBody, loginId);
         return response;
     }
 
     @PatchMapping("/response")
-    public ResponseEntity<? super PatchFriendResponseDto> patchFriend(
+    public ResponseEntity<? super AcceptFriendResponseDto> acceptFriend(
         @AuthenticationPrincipal String loginId,
-        @RequestBody @Valid PatchFriendRequestDto requestBody
+        @RequestBody @Valid AcceptFriendRequestDto requestBody
     ) {
-        ResponseEntity<? super PatchFriendResponseDto> response = friendService.patchFriend(requestBody, loginId);
+        ResponseEntity<? super AcceptFriendResponseDto> response = friendService.acceptFriend(requestBody, loginId);
         return response;
     }
 

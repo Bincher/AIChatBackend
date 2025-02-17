@@ -7,13 +7,13 @@ import com.example.AIChat.common.ResponseCode;
 import com.example.AIChat.common.ResponseMessage;
 import com.example.AIChat.dto.response.ResponseDto;
 
-public class PostFriendResponseDto extends ResponseDto{
-    private PostFriendResponseDto(){
+public class InviteFriendResponseDto extends ResponseDto{
+    private InviteFriendResponseDto(){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
     }
 
-    public static ResponseEntity<PostFriendResponseDto> success(){
-        PostFriendResponseDto result = new PostFriendResponseDto();
+    public static ResponseEntity<InviteFriendResponseDto> success(){
+        InviteFriendResponseDto result = new InviteFriendResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

@@ -7,14 +7,14 @@ import com.example.AIChat.common.ResponseCode;
 import com.example.AIChat.common.ResponseMessage;
 import com.example.AIChat.dto.response.ResponseDto;
 
-public class PatchFriendResponseDto extends ResponseDto{
+public class AcceptFriendResponseDto extends ResponseDto{
 
-    private PatchFriendResponseDto(){
+    private AcceptFriendResponseDto(){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
     }
 
-    public static ResponseEntity<PatchFriendResponseDto> success(){
-        PatchFriendResponseDto result = new PatchFriendResponseDto();
+    public static ResponseEntity<AcceptFriendResponseDto> success(){
+        AcceptFriendResponseDto result = new AcceptFriendResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
