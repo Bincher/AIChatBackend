@@ -6,7 +6,7 @@
 # 1. Project Overview (프로젝트 개요)
 - 프로젝트 이름: Chat with AI Secretary
 - 프로젝트 설명: AI 비서 기능이 포함되어있는 웹 채팅 서비스
-- 상세 정보 : https://github.com/user-attachments/assets/b4ed1853-2e31-4cdd-8418-482942cbf1f6
+- 상세 정보(노션) : https://bincher.notion.site/AI-173ee2939d998095be62d57686e61c0c?pvs=74
 
 <br/>
 <br/>
