@@ -14,7 +14,6 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import com.example.AIChat.common.CustomWebSocketHandler;
 import com.example.AIChat.service.implement.ChatServiceImplement;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

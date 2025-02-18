@@ -17,10 +17,6 @@ public class GetChatRoomListResponseDto extends ResponseDto {
 
     private List<ChatRoomWithUsersDto> chatRooms;
 
-    private GetChatRoomListResponseDto() {
-        super();
-    }
-
     private GetChatRoomListResponseDto(List<ChatRoomWithUsersDto> chatRooms) {
         super();
         this.chatRooms = chatRooms;
