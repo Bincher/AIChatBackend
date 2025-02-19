@@ -7,6 +7,7 @@ class AiChatApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.err.println("for aws");
 	}
 
 }
